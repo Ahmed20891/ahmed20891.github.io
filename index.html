@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ahmed Gouda — Clinical Informatics Professional | CPHIMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS ===== */
+:root {
+  --cyan: #06B6D4;
+  --cyan-dim: rgba(6,182,212,0.15);
+  --indigo: #818CF8;
+  --indigo-dim: rgba(129,140,248,0.12);
+  --green: #34D399;
+  --green-dim: rgba(52,211,153,0.12);
+  --amber: #FBBF24;
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="dark"] {
+  --bg: #080D1A;
+  --bg-card: #0F1729;
+  --bg-surface: #162035;
+  --bg-hover: #1C2A45;
+  --border: rgba(255,255,255,0.07);
+  --border-accent: rgba(6,182,212,0.3);
+  --text: #F0F6FF;
+  --text-muted: #6B7FA3;
+  --text-dim: #3D5070;
+  --nav-bg: rgba(8,13,26,0.92);
+  --badge-bg: rgba(6,182,212,0.1);
+}
+[data-theme="light"] {
+  --bg: #F0F4FF;
+  --bg-card: #FFFFFF;
+  --bg-surface: #E8EEF8;
+  --bg-hover: #DDE5F5;
+  --border: rgba(0,0,0,0.07);
+  --border-accent: rgba(6,182,212,0.4);
+  --text: #0A1628;
+  --text-muted: #4A5E80;
+  --text-dim: #8A9CBB;
+  --nav-bg: rgba(240,244,255,0.92);
+  --badge-bg: rgba(6,182,212,0.08);
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+  overflow-x: hidden;
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background var(--transition);
+}
+.nav-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--cyan);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  transition: color var(--transition), background var(--transition);
+  letter-spacing: 0.01em;
+}
+.nav-links a:hover { color: var(--cyan); background: var(--cyan-dim); }
+.theme-toggle {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: all var(--transition);
+  margin-left: 0.5rem;
+}
+.theme-toggle:hover { color: var(--cyan); border-color: var(--border-accent); }
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+}
+
+/* ===== HERO ===== */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  text-align: center;
+  max-width: 820px;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-accent);
+  color: var(--cyan);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 2rem;
+}
+.hero-eyebrow span { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+h1.hero-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  margin-bottom: 1rem;
+}
+h1.hero-name .first { color: var(--text); }
+h1.hero-name .last { color: var(--cyan); }
+.hero-bridge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.bridge-icon { font-size: 1.5rem; }
+.bridge-line {
+  flex: 1;
+  max-width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, #06B6D4, #818CF8);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.bridge-line::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, white, transparent);
+  animation: shimmer 2.5s infinite;
+}
+@keyframes shimmer { to { left: 200%; } }
+.hero-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.hero-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 2.5rem;
+}
+.hero-subtitle .loc { color: var(--text-muted); }
+.hero-ctas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--cyan);
+  color: #080D1A;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform var(--transition), box-shadow var(--transition);
+  border: none; cursor: pointer;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(6,182,212,0.35); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.btn-secondary:hover { border-color: var(--border-accent); color: var(--cyan); background: var(--cyan-dim); }
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+}
+.stat-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* ===== SECTION WRAPPER ===== */
+section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 1rem;
+  line-height: 1.15;
+}
+.section-desc {
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 580px;
+  margin-bottom: 3rem;
+}
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+/* ===== ABOUT ===== */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.about-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: border-color var(--transition), transform var(--transition);
+}
+.about-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+.about-card.wide { grid-column: 1 / -1; }
+.about-card-icon {
+  width: 44px; height: 44px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-accent);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.about-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+}
+.about-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
+
+/* ===== TIMELINE ===== */
+.timeline { position: relative; padding-left: 2.5rem; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 9px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--cyan), var(--indigo), var(--border));
+  border-radius: 2px;
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+.tl-dot {
+  position: absolute;
+  left: -2.5rem;
+  top: 0.2rem;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--cyan);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem;
+}
+.tl-dot.nurse { border-color: var(--green); }
+.tl-dot.analyst { border-color: var(--cyan); }
+.tl-dot.current { border-color: var(--amber); background: var(--amber); }
+.tl-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  transition: border-color var(--transition);
+}
+.tl-card:hover { border-color: var(--border-accent); }
+.tl-period {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--cyan);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.05em;
+}
+.tl-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+.tl-card .org {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+.tl-card ul {
+  list-style: none;
+  padding: 0;
+}
+.tl-card ul li {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0.2rem 0;
+  padding-left: 1rem;
+  position: relative;
+}
+.tl-card ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--cyan);
+  font-size: 0.75rem;
+}
+.tl-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  margin-top: 0.5rem;
+  margin-right: 0.3rem;
+}
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
+.badge-cyan { background: var(--cyan-dim); color: var(--cyan); border: 1px solid var(--border-accent); }
+.badge-amber { background: rgba(251,191,36,0.1); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
+.badge-indigo { background: var(--indigo-dim); color: var(--indigo); border: 1px solid rgba(129,140,248,0.2); }
+
+/* ===== SYSTEMS ===== */
+.systems-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.tab-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  transition: all var(--transition);
+}
+.tab-btn.active, .tab-btn:hover {
+  background: var(--cyan-dim);
+  border-color: var(--border-accent);
+  color: var(--cyan);
+}
+.tab-content { display: none; }
+.tab-content.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+.sys-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all var(--transition);
+  cursor: default;
+}
+.sys-card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+  background: var(--bg-hover);
+}
+.sys-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+.sys-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 0.3rem;
+}
+.sys-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ===== PROJECTS ===== */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+.proj-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.75rem;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.proj-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--indigo));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition);
+}
+.proj-card:hover::before { transform: scaleX(1); }
+.proj-card:hover { border-color: var(--border-accent); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+.proj-role {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+.proj-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+.proj-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1rem; }
+.proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.proj-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+/* ===== CERTIFICATIONS ===== */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+.cert-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.75rem;
+  transition: all var(--transition);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.cert-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+.cert-issuer {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+.cert-issuer-logo {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--bg-surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+}
+.cert-issuer-name { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+.cert-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+.cert-validity {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--green);
+  background: var(--green-dim);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+.cert-validity.expired { color: var(--text-dim); background: transparent; }
+
+/* ===== DATA FLOW ===== */
+#dataflow {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 4rem 2rem;
+}
+.dataflow-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.dataflow-img-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  cursor: zoom-in;
+}
+.dataflow-img-wrapper img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  transition: transform var(--transition);
+}
+.dataflow-img-wrapper:hover img { transform: scale(1.02); }
+
+/* ===== CONTACT ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.contact-info { display: flex; flex-direction: column; gap: 1rem; }
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition);
+}
+.contact-item:hover { border-color: var(--border-accent); color: var(--cyan); }
+.contact-item-icon {
+  width: 40px; height: 40px;
+  background: var(--cyan-dim);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.contact-item-label { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+.contact-item-value { font-size: 0.9rem; font-weight: 500; }
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+.form-input, .form-textarea {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color var(--transition);
+  outline: none;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--border-accent); }
+.form-textarea { resize: vertical; min-height: 120px; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: zoom-out;
+}
+.modal-overlay.open { display: flex; }
+.modal-img { max-width: 90vw; max-height: 90vh; border-radius: 12px; object-fit: contain; }
+.modal-close {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+footer span { color: var(--cyan); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px);
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .hamburger { display: flex; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 1.5rem; }
+}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">AG<span style="color:var(--text-dim)">.</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#timeline">Journey</a></li>
+    <li><a href="#systems">Systems</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#dataflow">Data Flow</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:0.5rem;">
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+    <button class="hamburger" id="hamburger">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="padding:0;max-width:none;">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div style="margin-bottom:1.5rem;">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAkACQAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAGzAXYDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKM0AFFJkCkLgdTgUAOornNR8ceHNMuWgu9ZtY5U+8gbcV+uM4rndb+MnhrSiEt7gX0hGcQEEAepPQfzoA9Forxy3+P+mu58/SLhUzwYpVdiPXBxWsPjh4Ra18/zbtXx/qWgO7Pp6frQFj02ivCz8dtTeaS8h0ezOmxuFMbXGJiP73t+WPevSfDfj3SvEVitypa1Yru2TMo/XOKAOroqpDqNtMgdLiIhjxhwc1YWRXGVIP0oAfRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFIzBRk1werfF3wppjXkS3j3U1sp3LDGzLuHGN2MdeKAOzutRs7Lb9quYYd33fMkC5+meteSeMvjKbK9msNBiSRoiUa5k5Ut32juAe9eW6r44fX7i+vtWtjPcXAZbdSMLbp2xnOe/YeuTXLfbUOVX75P3jz+HNBSR1lx8S/GE826XX7gZbJVAEUD04AOKivPin4tlt5IG1ViHGPlRRwfpzXHbjI33SRnBJPFK0YWQMcgKMkYoHYkOr3siuheTErbnCHaH+vrTcoqthNnYmnwkACQ/u8jrTJiVHzYOe1AWGCWUgmNOB1J71EZJJRtKge4NTCIMG3SkDaTgHrTEZY4c7c888dTSEJHbs2Nsi/Q1bj1Ca2haATyDHGM8CqbXzEgeUgA9sU26Il2yIhXI5HY0wL0N5MrgpdyxnqCGOc/hXT6D8R/E/hh1SC8aSA/wTEyI3vyf5GuESNuD+QNWHJZl2ng8YoA+lPBPxfstUb7Dq6pZ3XVZS5McnfGT0Psa9UgnWdA6EMp5BBr4ZWVl2kscZx7ivQPBPxX1PwrOlvcObzTSRmMt8yD/Z/wNANH1ZRXLaR8QPDmr6b9uh1KFIxw6yttKH0Oa6K0vLe+t1ntZkmicZV0YEH8aCSeiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK53xN4r03w9bM11exxSBd+zILlR1wD1oA4v4x+PLvw3a2+laZIEvL1GZ5MZMcfTj3OT+VfOsmo3tvp4tHnITczbQAD82M8984FbHjPxPP4i8RXeoysTvk/dRn/lmg4UD046+9cwZSWxtJYjB4oKQ0hpV4ySeTmmLBK0mApIJx04zS+a8UgZGK1dgmHykk5689KBj90dgnl4DSkAseuKhe6BJ2ruJ6saW6+aIbFyCckkVTVJd33fyoAnlnlK7tpAHr3oTzfJDLypPOPWryXYS0a3dWLHpzwv1FQrP5cTRlevIKnn/APVQBXKFouWIIB60yCMtuUHAPeiWctGq44z2qQkLbEqOpCk0BYeqWytj5mbHJI4pPMi3YKkj2PNLDHhdw5U9/SmAAnc42Lnk+tICZwGBKHco9QARVdpWjbdgAgYAI/CntOBkQnAPqetLNI0tuokiwy/xeopiGLJA65cN05A45qIqRlhGQO1JERC+9gDnjFSNdHfhM7fTFAy3pl/d2M/n2spjk2leD1B7GvUfg542fSdfl0/UrtYrG7Vm/eOAscgGc5PqOK8mG0tlxjHQirCO0EqyoBvXpkZBpCPt23uoLqBJoJUkjcZV0III9iKnr5q+HHiO+0jV9Lkt7p202/uDbz2ecrC5JxgHpzg8e9fSUTbo1Y9SM0yWPooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAimkEUbOxwqjJJ9K+RvG2rDV/GmtXaXryW7TkQjPBA4H4ele/8Axe12fRfA9x9mdkmumEAZeoVup/IV8t3G1sxK+5hjcT60MpDTbt8rkZP1ps80VsvyDfLIoOT/AA1aecfZ0cYyRjH07/yrNiia6uNikDdxSKsNjjJZSSDnqCamljwQ0LnZTvmtS0O3J9ahaYqTGwBycHFMCchtpEbFlA6+9VDK0bFU5LdeauRRNJb/ACvhSfXrSpa+QVIBD5zv9KBDLaOSKQtM5RSM7Qev1pGRXlJIOT0wOBU8Vk9zIx3fiTjmpJIXRNjqQc4yB0pXQ0mVVsyWwvGDg5HIq19n8mHypBlieo7elORGAYx5cjg+4/zmmSlyQGBIP8Q7VPMilFkKAxkIpP3ug7fjUVwH4Vl2/rWj9kfyTjknHQ1AsQwTNncDheOtCkgcWUmjCAEdeme9XLeeMIIy28qOMr+lJLZtsEiAYIOCevFQfZ1MW7JPFURYS6aADdEPmJ7jpUUTRrmVgMDoPU1JvgZR5sZLLxkHrUDsm47RgUXAlmlDwF8YOex9qYglcKuSFqNNrMMsAoPerkwdHVhIpjI4IHSmB0Hgu8trLxVpk+oSMlpFcpJIVGeR0/WvsCzuIp4gYmDJxhl6Gvh5pSr7T/EvXGK+pfhx4ss9R0HTrGedFv0gGUVh8wHBPseRx70CZ6LRSL0paCQooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiimu21GYnGBmgD53+OmvS3XiW20mGZha2kQeVR0aQ5xn8P515AI5GkMgjON2T3zXb/ABQu/tnjrUZMbWZVGAehCgVwTMwYIGfB6880FotkrLtAzgZ7dqZDbyK2UB3dsVJbw7ZCN+5ewz0rpNItSE37Ms3Tv+NROVkaQjzM5crIJ1aReTwSaqXH+uIGQC2a7+70LzIsRYEpORkcVDbeDLudsTmMH+EqOnvWarLqaSw8r6HO28cJiiTBJ9V7Z/nWlFodzcEABtrcBVPP412Gm+AEiZXubpnCnIQAACuzsdJtrVRsiBP95uTUutfY1hhv5jzO38E3SBSxbB7FTVh/CNzgkfOvuK9V2DGNo/KmfZ0PVBUe0Zr7BI8ui8KSRjBjLBuoBFT/APCLbuCo9xXo7WcWchAD6im/ZkA6VPOy1SR5/H4UJXhQB2zRN4OMjbtoUgV6D5WOgpGjJ7YpczH7JHk934Xul3KM4xxxWVJ4duQNm0+leyzRBhgjNZtxaDHTB9qPatE/V0zxzVdJFu8RJG/+MCs6WNBtQjbu55HT/wCtXo3iHRhcQllXJHP1rg9Qh2IOmQcAHt7VvSqKS1OSvRcGZht2Vypxnv3q3DFmBl3blU5GPWmoGkjDFcEHH1FSRS/Z5R/EMHjGM1vc5kRiNkkKTclen5V1/wAN72G28d6WLqe4SN38tPLbjLcAEdxnHFcc7eZ+8br0JzXTfD2CK68eaSJASY5fMXHcqCwH6UA9j7FjyEAJyR3p1Q2svn26SYOGAI4xU1MgKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAqtezxW9pNNM22NEJY+2Ks1zfjm4jtvCWpSSS+WPs7qCQSCSpwKAPlLWr9tY1/UL87cTzM+R0AJzWUib7gs2PYVG8xRmQAEMeaYrNI+VJAHvSuaG9B5Y4VQfYDiuq0VQdu4DnniuT04fugzt8vsO9dZpjncuB9axqvQ6aK1OgW0Ak3LGzZrUtbcqF3cnHPFRW2Ni/Sr6HFcSPRSLkMfIq8qqB0rPjkIA4qdJ61i0S0y0QKTbUInHrT/Np3QtR5XioyvNPD5FNJ5pMaGY5pMAmkdiKjEnOaV0VYe0YxVGeP2q204xVSWQGpk0CuZVzApB4z+Fcpqvh6G8jchdrHmu0kwaoTRAg5rNOzuhyimtTzGfRjbW7qSTg5Bx6Vhu2+VvlUMBya9N1WBUtZOOdprzmeMefkjkIa7KE5S3POxFNQ2M8tg7Acoeh9K6XwLZ3M/jHS0tN3nfaFZSvYd8+1cuTtc445yM13Hwq1eTS/HumH+CeTyJAT2bgH866TjZ9cQfLEqEYKgAipaamNvFOpkhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFcD8UtXtbHwjf29xtZp4isSkfxf4131ee/FqzivvB1xbOE8x2BiyMncPT9fzobsNJt2R8pTKxy5AGTwRTUclQgA/GrUkUlozRSRk7SQVxyKrAENxzx0PakXs7M1bCX5QjnKk5OOtdvodvLJGJWQJH/CMdaxPCejLdE3E8eQD8ua79VVFwOFA4rjrT1sd+Hp6XZPAeAM1oJjjFZcLcZ7Vet5FY7Q2aximdd0i6ASODUixMafEFGKuoFPSr5GLmRS8pu1OAI61d2rTWiB6UcrDmRArGpM8Unl0u09qLMCJzxVZ+KtMpNRmImk0x3Kb5xVds1p+UO4qGWJcVDix8yMxs4qGUfKTViQDJxng1UmbGaVguYur5a0dR1xxXmF1IDM6twVNeoXh5AI4JrzbxJafZdWkx91/mBrow71sceKjdXMdwVfHX0rsvhfp66l4+0xXUssb+aQP9kZ/pXHjDNye3FeifByCT/hPraRBuWOJmkGex4/qK7Tzj6tj+4On4U+mRKFQADA9KfQSFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAVx3xDtkl0eGQrlo5eD9RXY1VvrKG/tJLadQyOMc9vepmrxsXTlyzUj5U8a6KltH9tjOFkYIVHHPrXGW425jySzHJPtXt+v6NDqVpc2TtgqxEbe44rxq8sWs9VktpV2ugOQD7VjRldcrOvEQs+ZdT0fwvCF0a3YD7wyfetO6fy056CofD0RXRbUEYIjFW761M8OFbBPfFcr3OyPwo5vUdcljQRQK24nkgZwKz4fFV1aDhWB/2hW1JpcNuCzpzjljyaybm5ssiBYXeRjhV/iP0HWtoSW1jCcZb3LEXj28QjKBwf5euatr8SpkJH2ZWA6Hd1/SucuY51upoDp1tDJDAZ2FzIFJUdhnqfaoNN0241WS0ENpasbsNsCSDIK9dwHI/GtreRgpy7noNh4/huT+9jZCfbIFdPa6qlzGrqwIPcV5QulSWV2bae3aGYHgOOD9D3rpNKeeE7QCMcc9KwnKzOumm0d0boE037XzWbbJJOACeasvaOi5LdKjmZrYla5PUGoJtSjgjLSHpWdeXRgU8ZxXK6lrIkYrhiR2FJTBrQ6C58YWtvNskDKD0JHFV38a6cTjzD+Vef38klwWfD8cnvgfhWQkkZO3zWwvJGwnHvXRGKaOOdSUXY9Nn8W2gB2jIz61Rm8TQucqCR1NcZaWlvMARfRjn+Ja0V0X5S63O/PocCk1AcZ1HsdBJfwXcIeJgeMiub8XQB7GC4H3w236g1NaWEqT7V3IAc+qmrniK3zoPOMqQf1rONlLQuTbg7nngYBwT9K9E+EF7NYeMo51RnidfKcD0YiuKsdOm1C/EECbm/i9B7mvf/AITeF7Wy1QyMgZ4ot/P97gZ/nXVKdmo9TjhTvFzex7MvQU6kAxS1oc4UUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABUc2fKfb12nFSUhoA8OumxMQx6jmvOfGVjHHrMJTkzxhifocV614w0ZbbWJ44WKb181Mj16j868v8RwSnUNPMuCVbYxHpkEf1rgjeFSzPXm1Uopo7LTIhFYQpj7qAfpWgIwR+FVIDhAB6VbjJqWaLYpXlm0sbBTjNY2n6a+l37TqA2eSSOSa60R76DZA0ldMbSe5iaxYaV4gRHvbWVLhBgSwkA49Dml0Cx0jw67T2trLJcMMCSVhkD2Hatg2C+lN+wJ/drb2styPYwM+8vJb668ySG2MYH3GUtmmABY8AAY7KOK0jYrjpUYt13YArKUm9WaRikrIlsmICkcVfkbcmeaqxx7CMdKt4BT8Km1ylY5vUwTkds81hXNpAw+aJmHqpAP8xXUX8QLHisxrLzQQOKWw2huippR0S5024t2h89SDKF3E+5xXOTeF9XOqXM0GqROtynlSzM+N6cDBBGegFdLHp5jPy5H0NWBaykdePpXQqztZnM8PG9zDvtD0i10OGzjKzXEXJmUYO4/0rD021mjn+eJ8f3s4yPcV2zacznc1Itmsf8ADWc6rkXGjGOqM+KzUgMFxVHxBADolwMdErodoVSKy9YQNpdyp6GNv5VMHqOa91mT4EtLdNPnnHM0khVsjoAOMV7z4D08QaV9sYHzJzxn+6P/AK+a8V8FxoNDts8EsxJ/4Ea+gvDcLQ+H7JGGD5YOPrzXRS1qNnJiPcoxiuprUUUV1HnhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAHBePUBv7N+4iOfzrynxZYKsMV4o5Eqg+1e8eIdDGsWqhGCTx8ox6fQ15X4h8I+IpIJU+xnyYxvJVlKkDn1rlqQk5XO+hUj7PlbKVs4MaH1FaES5rE06YSwRsp+U9K3rbtWLWp1xLsKcVaCcUyEDHNW1CkYppFXK5jBI4oCDPIqyVWopHRe9Ow0yCfZ5ZwMVQA5zVm4mXGKp7z6cVDRSHl+wq0m4p+FV4o97DNaYgCxjjqKaiF0YN0cyEVUHyyCrt8u2Y1RZ1U81DTKuaUQRwM1P5C9cVQgmXdjNakZDLVLVEsi8pcdKqzxjBIFaLrxVKccGhoRmSDGaxdbk2aZP6lcD8a25e9c1rvmTy2tnEMtNKB9AKUNyKj0N7wbpextLsmXJmcbueMHk175GoRAoGABgV5L4UiP/CQWKRgEoxP4BTXrgrroL3bnn4y/OkLRRRW5yBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABTJEV0ZGGVYYIPen0YoA8Hv9OGka1e2SLtjjmO1egweRj8CKtwvtFavxAs/sviZLgLhLmIHPqy8H9MVixHgGuGorSPVoyvBM04ZxVoXOBWVGfmxmo7+5a2jXaMuxwo96i5uact6B3qHzjKc84rGimB+aSTe3fHQVZF6uPlFUkxcyLcuC3Jp6hDgAjis6S5ZsYH5VC8rgbhwT3qkg9okb8C/NgVqEYUA9hXE2/iP7PLtlU8fxVot4ogIyZOvtVLQXMmS6oCLg8VmSIpSq15rjXTZhQtnoxHFQxXRaQeYx9MYxWbRoppF05VQy5yKu2l8RgNxVH7TH0yKYXQ4ZDg+9RqhuSN9rgFc9qqyyZzVKO4JGDRJLxS5rgMmbrTvD3hDUfEurNfwPFFbWoKB5M/MxHOMeg/nVSaTCMSegr13wFYiy8KWuVKyT5mfPXJP+GK3owTepx4qo4pWJvDfheHQlaRn866kGGkIxgegFdDiiiutJJWR5spOTuwooopiCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACk70tFAHH/EHS2vdEW7ijDS2jeZnHOzHzf4151bSBosj0r3GaNZonjcAq4KsD3Brwm6hOk63d6eT8sMpVT6jtXPWj1OzCz3iW1fawp97D5sccg5KnOKg3BhwakWf5Nh644rnO5My3ilUHyvxGabFe2ocJM/lSZ+6/BP+NacaA5zkg1FeafHcoMqCw6Zqk2LlVyWO5tcc4PpgU7zrZh/q2PeqVmBBuV4o5D38xc/rWzE2mPbrHNYBcfxoOf8ataj5Wuhly29hOfnQr705bexVQCytjpxXRyWeg3NvhIlibbgMpKnNVV0TQ0gUzTu0m3JxLjmly+Y9H0MN4rI/dGMe3SqksVp2fGPetifTtGSzJ+0O0pzgKTxXLavboAv2SWSPj5i5zmk0OybtYfcRlVLI4ZfQVDHcsMAZIHrTLPSnuI/300rL1xnAP5VeGnRwYUcDt7VN0RKOuhbsiXjZj0B4zSySZcgdqbuFvb7FOSTwKh3hIyztg96ztqVd2J7Oxl1XVLXT4xkzyAN7L3P5V79DGsMKRoMKihQPYV5r8MtDeWWbXbhcKcx2wPcfxN/T869O7V3UocsTzMRU5phRRRWpzhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAIa8V8aWxXxVf4PJYMD9QK9qPWvJvHEYXxXPn+OND+mP6VhX+E6cJ8djkbW7ZX8uQ98ZNXHmwN3aqd5ZHPmJw/r6io4LoSx7X4I6g9jXMtTv1WhqwS4wo596vAggGsCC4CS7TkjPBzWzBJuUc1QJkjwpIcnhvWnRkxAqW4pduRzVO6t5GGUkIPpQpWLuy0ZBnrT1uIlOSAa5ma0uxIGBkYHqASBSRwXSt/Htz0LmnexXtXtY1byYyudox9BVRbQM2+U5PpSrFPkZbFTKu0ZPWolK7HdjgAgyB2rOurlfMznpU15ceWn9aw2ukclzID254pJMzlJIvPdY+duuMitLwxoU/i/Vfs67ks4sNPMB0H90e5rl1WW8mMMfEY+81ezfCa2WHSb8oPlM4Ufgo/xrWmlzWZz1pNQbR3djZw2FnDa26bIYkCIPQCrNFFdh5oUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFMeRI13Oyqo7scCgB9FY134p0izB3Xauw/hj+Y/pXLah8ToYiy2enzSENjMny/oe1UothY7+RlRGZiAoGSTXjXiLVE1bxFc3MTK0SkRoV7gd/51p/8ACWarrNlM8zpFblSQkPJOB6jrz6VxunP5hm5Y4lYfNnPX35rDEx5YanZhI+9c1NodcGsfUrBxmSLPuB3raTpQw4IPINcSdjvaucgZckuSenA9hW1p9+pjBYgEjOM1HqWlebl4DtbuOxrmFnnsLvFwGQdwSea2i09DnknFnoSXSHAyOelP+0x8cA/jXJQarGxGHA47GrQ1CNANz/gaHHUqNQ6MyREZwKY8iAcAVzx1aNRkdOmRVeXVlZeH78c1PKx+0RvzXCdOMn0rPuL+NRtDc+1Ys2ogRk7hk1lXGqCQMkY3SEZ+lNQJdUv3uomeby0IwBz/AJ/z0qCztGvZAkRIQcs3pmotK0qe8fzZWaOPglv730/xrqoYo7eMRQptUfr9amclHRFQg5ayI0t47W2CRjp1967j4Z+IoLW4n0abCmVvNjc9yRjH6VxzIShrnTcTW3i61MMjKxiGAGIyQT6U8O/fDExThY+qhRWR4c1H+09HgmJzIF2vz3rXruPJatoFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFJmgBaKjlmigjMksixoOrMcAVkXnivSLMAm7SQnoI/mosx2NukyPUVw9545kmJSxtwg/wCekqk4/Dj9awb7U9QvlImvncgZKRttH44PFaKm+o1Fs9HutZ0+zJE11HuHVVO4/kK569+IOnwkpbwvKw4yxCD9a4mOC9YcbRGOflxz+BAJ/Sn+dtwvy+mZMoT7KD978MCrVJFqHc2Lrxhqt0v7uRbZT2jTcf5E1jStd6mfmvppG7lmzj/PoKmjsIH3STp5J/i3/I34sOAPYVLLaSfu44n/AHbDADISxH+yf4fqatRS6Akuhl3FlJaowiAmlX72G2bPc54/DrUMcX2gK8ijzMfMoVkdvoT2/nW0toLdf3zbUT7sUp3IpPuOSfc1XuLryRI8iiPam9UfBzx13cgdOlVttqG/Qlt7aJoTblQsaxkbR05HTiuVRUstWaIKUiuh5kQYY5Xhh+W0/jXXIXFzEicFxuLehI6/oMfUelc94q0d7jT5206L/S7KYXKED7ykcjPc4rnxNPngb0J8rLceCOakdOOKzdF1OLVLNJUOHx86nqDWuPSvI2PQ3KEi4NQS2MF0u2WJXGP4hWlLEG5FV9pU0BY56bwhayMzW0sluxOcA5FULnwrqkWPKuRKo6ZOK7RXx15qZHXvV87IdOJ5u+h6ovSJs56hhUTaDqpzkEemTXpztCBycVlXMqMxA6Ue0l3D2MWcMnhu6PyyzDrxgk1qWeh21oAzrvYevStl+vTFNSIu2BUynJ7lRpxWwkUZboMD0xVpYscmpoogopzDANZmhXYAKRXF6u3leLLF+ANvOenDf/XrtW6ZNYH2BNR143RYLDaJtLEjBckcc+gxXRhVeojnxPwHpGiazceHvkt0Sa2kbBX09MYz611lt47059ouo5rYk7dzLlQfr/8AWriApFuxGSuOo46Ac5HQ8VSu0draQJIN2Q4Xcc9ffP8AKvVcEedyqTPZbXUbS+XdbXMUo/2WBqzmvFY/Mhlc4ZGGGDRnHUc/54rRsfFWraazr9q+0RRuPlm54PvUum76Ech61RXIWnjy0IAvoXgJIBdfmX/GultNRtL5N1tcxyjvtbkfhWbTRLTRaooopCCiiigAooooAKKKKACiiigAooooATNMlnigQvLIqKO7HFcNdeMbybiKP7OCOw3H86w5Lme8kLs9xKx6tKen0z0/CtVSb3K5TvLzxRZW6sYt8xBx8owPzNc/deK9WuSVtIooFz1PzH8+mfwrn/sqSsSC8jA46jA+p/z9Knhsp3H+uCxnONoKr9Mg8/oK0VNIpRS3EuL6/lffM8kxU/eJyoPsAeT9B+VMDmYnz9nuudrY9weg9sk1bRFtseaWeTooYD9COBTZZ7YpI8r25MRAIchwmTjj1PXvV+hSXkVTHDMcQIYSTgBF2O30HQD3qRNHaL97N5bDOQrDGD+H3j7mrqNawwlo7n5THvbcS27A6c5x+FRpqEBmtH81CkhICEFlXDAccUrpK6HaTdiFoyxEbs6yZ3eTN0UY6sw/lkVcWOIuoeMNNjjoSB/s+gqLUZ7QafKpYYaTkEOegz/SiNrL+1b3ATKoFGEbpgcfpTbXKCi2yKdZ1eBY0VvMb5I5SuxB68kkmks5GMMkipEMvsOJ87++TnP5Zqw0lsNUtgUziLI/dkj+Km6bLb/YoQkTHL9FhGe1JuySQJXT0KV7MXF4SsAEexIw0u4DnngfSoLoslzsZoTH5IjOAy9QOhPFWLiU/ZL5xaTLm4x/qQM4JqbVnm8mWQRY2umd06g4yO1EkuayQK/KUbabdpsFwD87LgEc9OePU5GPxrSmhiCxXzoGSJcFScqsbdsdzWfY5y0a4XyvnRcjjByDxxjJP5VoWrmaRoBGG2DzFVvurG3Y+pFVa6Fs7nn+uadJ4Z1xr6xVzp9wd3K4XB6Ee1dBYXsV/brIjDOORW5c6bbNA9rc4mkVS8UkvJkQ9VA/z0rh7uym0KdLm08xrCYnYWUjae6n+nqK8zE0LfvI7HbQqr4GdRtqJkBNQWOox3Ua8896tkDPFcVzqIGiNQvEw6E1eprLk0AZLxSHqTURgbFazx8VXdcCpuMzjFzg1Zii2inBMtU6qMUXBIZtpjLipicCqF7epbxMxPNCQ7mZrmomzttsS7p5DtRR3Jre0fTI9P0CSJ58TuyhjkAs2cnr15z+lc3oFpJreti/l4trdsIT0L//AFq9BuYYf7PigR1YGUZU4YEY546jr1r1cHS5Em92ebiKnM7IgicwrJwGCq2VyF9enas5322Mm2JN2FYxycED9c8jrVwHFnchk8xWjJ24yegJ471mXpgdkWJ2RntVVUDYbPUDkZ6iut6JmSV3Y1SqwIxZWCKFXjJXP4dPyNQ3ECNJclgdwRQxz+XI6fjil1QyR2s4LN1UfvI8/qtPiuH+0XnCvgx5Mb+3oeam7tdoSW9iO5tR9mkxvHygccjt3/8Ar0y3juIp1a3n2t5QbcpIIP4Zpbu6Ob0GCdShQjbHjOcZ5Bqx50KhpnlThVAWVeQCB34/rR5A0+Uv2vjTWNMlaK4KXMYUMol4OOh+Yf1rqrLxzpk4C3W+0Y45cZX8xXCyeTMZ22sAqBASdy8+/UfjUdzZ4tpAASuzAxyv6VLgrEuKvY9jhninjDxSK6noVORUleMWF7f6ZKGt55Iv3YJ2tlSfoeK6ix8fyxyeVqFuHXbu82Lrj6Vm6bRHKzv6KztO1vT9UQNa3KOSM7Dww/CtGo9SQooooAKKKKACiiigDzSCJI9kcoR5ZG4dTkdfQ9frUl00kcTOwAhJ2bUJyfrx09qpIJiNNfdMMSMp/wBIH98D0qfUoGbTpskEiQH5pW+nau2z5rM2aXLcIbI/bbmNnBjhUFEWLA7dRmpHjYanbDcArRZKiJQCcN2/KoUtgdWumCw5kiyD85PRafLZKL6xlKxd1JEZPfHf60oybe4SS0YmnxoLKIuy580ljtQZ6e1QvHGP7RXzcfvEOQyDHzn2qaws9lpMmI/kmxxAPTFMkswt5qK4A3x7wPs47YP9aUHo9RyspIuja8C5mOGt/wDnqv8AdqlE0RXTn+1Hh2APnjn5xV60t28m1XjAi2f6gdsisr7MVsbbDDMNxzi3UdgaE7xeo0lzl/UfLOny5uG4kJ4nA7EUkRhXVL7NycsgP+vB7LUt9aFrS6QAcMrf8e4/vZqKG3P9pQt8mJrUcC3HUj/61F/c3FG13oSMY/7Tsz9of5o9oxcDB60adGn2Jf3sh2y4OZs9hTbi2IlsZMKdshBzbj1FJZ2nlpdx4iyJiceTjjp/SiWy1BJWasVLyK1W21BXaH5ZwxBkyeSR2NS6hLZ/ZrjaEOUDjEWemD3p1xag3V+gMA3xB1/cgnIANWFheayiQzTnzINh2Lt5Ax/SnJ+8ncSty7GJEVjjgkjjKiRVyxj2jOOPxzkVcaY2MibAP3P7xyRxsY4b6nOePeo4reL+y0uJEZpYwWUyHLEqc8D1xViJfPiW42hvKLDax+8ej59sVWiYt0S3NvNIq3FsTHND+8SeTksnXAH+e9QT2NhIfKuPmgvV3KZXOVf2A9D/ADFTw3hjJiVmbyyChAy8iHpgenvWDq+t6doYuIL69jt13eZCkf72bJ7Z/h4OO3QmoaV7S2Gm7adDmb+1n0S/MQYmPPyN6itSx1QSKFc8+9NPinT/ABDCImguHZkBDySKefWq93oN1botxaZmhI3fL95R7ivKq4aSbcNUd9Oumkpbm8sgYcUpY1z9lqJXCOTWylwrjOa5LnSPZqgbLVKSPUVC0gXNIYmAOtI8qqvJqpPdhFJLVnL9u1JitqjeWGCtMQdq5/z0FVGEpO0UTKSirss3upxwp94ZrHisL/X7hVRHS2J+aQjAx3x6mumGmadp8jIjLeXSEAu8eQOM5GSAOlZd94guLc7LBP3n95yNqDn0AGa76eFUHeoclSu5K0TsdHt7ayUxRjyEhTai4IGenfrx/On6su54EVs+UpbcQMhm44I/CvHX8aeI9Ouht1AyeY+ZIpCZEPsQc/pXb+HfFEOtyeWSkN4+ZJrcH5XABGUzznk5Fd0aiucnKjoUYfZZUkXcG3jGMnoP8/jWbDJG7WEriddysoBD4+U4A6kd61rd0/eq6koGG0lc8FRj27d6z0it4PsaSReW6TFDlGAySvTHBp/ZGn7xPqVxILYlY433ShQFl2Hoexp3neZNfedbyKQ6jlQ46HuKkvniVoI3HH2oAM0WV/P8arxTWbPesHiAM3O0sucZqXblQ4p3ehHcm0D6huj2cJkmNl7j0q9ceXJp8m2bIKR/xBvT1qrN5DtqQWfbkJysxB7etXby3MlhMM7vkj+/GG9O9X9pWZP2dhkdr/pc7AKf3SEfu9pHA7rS3AkEsqHyyog80DJBJHYmiKzVLyTAiA8hf7646elFzC4ndtzf8eZ+7OR69jQt2OXQkjjLx+cyD94gbAIO0d+ev86glt4pJJJD2TahI659xVuISGyjGXz5TDBCtjrVe2EzfYWIODvBzAf6H3o1tcmyvZMjexkihzETujj4ZDyPxHIrR0zxXrWneVHcH7RGQciXkjHv1/Oq1yXItxuQCSYI+6Ns9R+VFvJJMZ2kaPCSGJVBbAA+opcqauybXR2+m+M9MvWWOZzbTEcLJ0P0NdCkiyKGRgynoQcivILmK2kuGLPEogBBbOOT9asWN1qWjgG1uXIAyUYcEfTv+FZypNE2XQ9ZorjNG8eQXKxx6lCbWZjjdglSf6V18M8VxEJIZEkQ9GU5FZNNbiasSUUUUhHk4+0Lp0Dl58wz/NiJR23etaF9DM1rdqJrngb+GVehzWfJLJ5OowE24Kv5g+R+mf8AAitJJ3uIVbzLf9/DjIDcEiuyWk9joT9zcqQRSf2jZsTclZYAGZrgdcEEfoKfeQv5NtIFk/dy5P8ApP4/0qoLtxb2Nx50I2TFHxE3HO7+VX755DZ3KedFlW3Z8k9M4oWk9gk7xTuMt7YC7v4mhY/MGH+ke5P9RRJZRHVYi9vH+/g8tsyt3B/wFNhunbVY289ALm3BAEB67f8A7Gn3bzhrGcTSfI5Qlbceo/pmlBNStYU2rJ3E02BX0+EvCgw5DASt3Of61WlsE8m/hEMAKSh1Jdumcfyq3aRXMf2yLzrj5Jdy5hHTJH8gKJknfUJ4/Nuv9IgJBEI64+vsaIXs1Ycrc17kzwLLA+Eh/fQZBDv1I4rPihIbTpiI2VSYziZxwDgfoav2LzSWto+676FPmULwDgfoazXiuYtOlQNdBre44OR06fzFCvysNp7lvUrdDY8QAtHKCP3xHtTo7U/2lehVkVXRZF23I7YP9amnS4a3uVEtwdyb1zEp96qwSzi8sm858Sw7DvtuMjI/nijVw2CPxPUllt3Go25DTgSQ7CftA68//WqPTUZrBBN9pYpIRhpQcZ5/rS3txNGlpKZYh5cuGJhPsf6VHEzrNfRfaISyOGA8pu5P9MU5LROwR6q5XtoPsf2lBC0KrcYYibJKNx+HT9anDJZqIcrsUBCOzHqgz7jrUcrzyXl0itZAy2/mAHd1GMfqDUtrbi7traVriBWZCuEBKEg4JPHXjj605N3vYlWcdzmNY1a90+++xWQUPHGTPOx+cqT9wegGcVw2oaO41S7Ij85SvmwxeacOxGTz+Irs76xuAYbqKSz3LK0EuVYZB57/AI1pQ6KDsgupbTbKpiYFT8r9VOcewrNwk24jbWjPMNMsb/Sbu2mmt2hjnba0bHgDPB9q7+PxK1jcMg8ryh+7VHmK8/xADGOvuK3447STT5FghZCkf7wINwyME1TTRdO1B5xIiSs+2X7mOo5pRpyastGNu2+xnTXNlrEuxLUxTxgeZgjcM8g4A5HTvUM1vPp6qS6spfywRxzjNbdr4Ut2mkkhmnjm8ohSp9DnH86p6PaS3H2u2vrgvNazGM5AG5SMqcDjpRPBKove3HHFOO2xRW7OOc1HNc5WqF/HcW1/JB5cjBWxlVJBHY04RSeXna2T7V4LtGTi+h6qldXRq2uhi8txdXbSCPcMRqCCw7fnWxYRfZ7RoEhFrbeY24q2N2eTjkgfz9q0lc+XCr/KkY8rdIdqDsv15HWqJiS4vGOHuMjeSflRGB6gd+M17lGnGnG0UeZOTlJuTK90Ihpl29nGIZBDhJScbmOccnvkVxd1pLx3Ut9cTmFliVJYiwZQxx02k57V3uoWonkt4CkbiWXcWkbooHQKPr+lF1Ym4jEccpUTTjhIv8+orTki2rsz5utjzSbRYZ7xT85EVvvYrF/Ef/1iqcVi1jqT3VtcBJbVFKtsOQTj2969cXTvNnvJPMuMySLEPQY9vwFUpdIbyb5jPL+8nCA+WP4Sff2FQoR1dxvdKxn2GroYA8n8cSORtJAwCevX1rUiu49QLGICMuVkh/ebenBJzz2PFX7nTmgtbgLNKuyEIPkHfA9ahtbRvtkZZomC2fO+LnJ+n1q0la9x3u9ULcxGW6syZXG5yQElHOMdaqW8DeVc/vpTuuDyWBrQmslbUdPylt8u8/db6/0qvp+nJ9lcmOD5rjPyq3oKJ35VqKFtSrdQO41MiRyMxjDRq2ORVi8tV+xTgJGWwnRmT09KrXWnx/6e4hhy0yAbSynjNXb+CVLS4Eb3HO0DbKD3qm3zom65RqQML5tofH2ZeVnPXj1p08Ti5Khp/wDjzPWVfenQJc/bLvdJLhEjQb4ge3rn2ouzKt3P+8kAWxJ5g4/zzRFNyeg5PbULNZjbwDzJDkP1iVu57iqtq80f9n+Z5YBd15jZc8j0q3A5WxjYyQH90z8qy4zk1Da3EjSacqohyXJ2zgDH4/Skk+V3Q7+/uSzzMq2pXyT/AKQM/vG9ugxTYnlEt7koFWQY+VyMkt3/AAqa6uCsdqMKAbgDLS8foKitp3kvrgKgdTOVzE+T8pPY/WlL4VoC6lW6nkxfnETxh0UES4579au30wjt5/kY8KONrdSB6+9VxKTZBmtJz5tzg/u15+X6+9XNSK/ZLtmgZsFeCi/3h702lz2F9kptsNx5RifakW4BkJ64/wAabBc3Gn3avpt60JRd8iA5DD3U0p8tdQfNueLUE7dpI6ehqrcBJ5JmjfLJGiBTkgMTke46UrJuzE0kdlp3jwCBRqduVkx96HkH8D0ork5od0rLg5z04orNwiRymxI9z/afli1l23MH/PZepH/2NGm3Fw9jAz28waNypG8HjOR+houxZpd6dKTBw5T759QPX3NR2S2kcd7Cpg+SbP3z9P6VcmmkzWKdmrDJJp/s99EbSfKSh+ZAOCcfyrRa5uLiElbeQieHP+tXgkVRkSze+vY90G6e3LAbjycD39jU9nNZLaWxVodoJTgE9CRTk0pXCKbjaxWju5wmnzm1lADmM/vl45/wNW9QadrKUC3k3I4IzMOM8VlPJp/2C6iBizDOGA2Nx/D6VqzT2E0VxhomMkJcDY3pn0ptpTCzcNiGO4dtSkcQqBcwB0zOPQf4GnSzyLeWMot0IOUP78Dvj+tVYrrTxPp02+PBzEP3ZPRto7e9S381ktkH/dkxS5H7pup4oSipBLmcU7ElnLMltLF5EKmCfA3Tg8dB+oqC4kn87UIQbMZjEq5YnphvX3qaC5sP7TvI1MOJEEg+Q9sH09zSy3VimpW26SLE0ZiOIc+vfHuKUVHVDk3dOxJZTSyWtszm1bfFsOHI5HBqjHdzR2ttJ5G429wUYpOuB0Y1YsLy0FkEDKPJkKkeT+PpVa6awY6lbsY8AiXmIjPc9PZqI2cWgd1PY0tQad7S4VbaYFWD/wCsHr9PSmR3Ux1H/j3nH2i3DjLd8D29jSxmyvIODCfPg5y5HOPc1XijtM6ZcBI/lYx5EvbOB39CaWjiCupbE0tx5V5ZTvbT7X+Qnyw3fA/9CpLC8ijtSgR08iYqQYgPT+tLqVtbrZFlEatDNkHzcY7Dv64p0EYW9vI45pSkqrIoWfOO5/nTduVO5Md2rFW6urfydQiIdvLkEo/djkHr39DV2S7gubVmMMgEsQcEwDqBkUS22/UUzLc7biAxkbu/r09hS6dHItlATJclo3KN+8/EdvQ03a6dwWsWrFK3urORdrSIDODIjBCp3jhhwO9QgmGe1R7oMozHkp1Unj8s/pU8sDwQshmkAtrjcNyBsKf/ANQ/Ol1mxaW3HlPF+7b74XYwU88Ee+KpOzsmGjV2iaB/KmD4O5W+YenrWRfQrpniyOXb+4vo/LJC9WHKn8iR+FXYWlSR45nLyoAGYnO//az7jFRa/atf+HmZOLi3bch44I5X+orqvtI5HvYy9acWl3DPj5ZD5TfXtT9Ot/tV3kkbE+Y5Gc+lZmoXQ1nQY5owN7qHHs4/+uK2NHef+zYyQ8byqrPHgAKcZwWPbkdK8LFZc5YxVVtuz0qGKSocr3LUnlfbJZZSHZZCW3nO0KPToOfWooboSMJFusLJGWwgwFwcYJ9M0unW8htwZVQgAK6D5YznJBP97r3qK7u7aKwht7dxhpTGqRRjgZ5wPrXpK2xg0+gimS61kGOaQJHb5PkQ8Z+pP+1V4WzNe2iEXriNGlOWCjv7ewp9nOXuLySO3uiu4RjIx04P/oIpbu4nS4vGFkf3UAjG6UdTj/E1MLXbsVK+iI9Msh5MLmC4QyStI2JATx+HtUBtmezhGy9HnXe4DzBwMAHt6k1eiknisVYWQO22L4Ew6kE/1qKFpzLpqCzQcuxHnDpkkf8AoNNfC9A15tyTVIGFhclY7olpAOJBnr9Kjggli1G65vQEhCDJyBwtS37TPbxR+RCTJOMAzD0/+vTYZZmutQb7PCQHVRiYdiR/QUNvl2FG927g8cx1e2+a+wkBc4IA6NSaZBKLGHd9tJaUnmUZ4wKS4nmS/uCYoAI7Mj5px1wP8afYTSi1tSVtTkM5Cy+596JdFYUdnqZspmZHKvdgy3oX50Djof8AGrGpTSCDHnQlmnVf3kbL6+lRWjzuLFBbA+ZcFyUmB6bauX08vlRA29wd1yv3fm/z1pu3tNg15FqMgmf7Tf4EHDKOJD70y8nlF1d/u4ziALxcAddtSRXO6W8LW1x/rQMmIerVDdXNt5+o70xjYPmgH+zUq2pUr3RMLiZtNQ/Z3INpniUH+GmWzD7RpwNtLu8piMxDjg0s0tmNNwQoUWmOYyP4aitHsRcaad8OfJOOWz0ahWUBWfNsWrmVwloot5gDcDoo9qq6dPaTOZmKqXZ3+dSp9O30ouXt91uUdNyiRuHIIwtXNPhb7HGQ0v8AqSRkBj374ourR1Elo7ozYDYfZbFVKHM+RhWPdRV3UfLNlcbLZ23NziH0ye9NiQrFp4knmA85usgUH5h7U/UWtjanfKh3S4+aY88H3q2/f3E17i0KdxLCb65VoijKqr80YU44PBH0qva2rvNCzje0splLfcYKBwPQ8ZovI1nurpYtrrLMqbfMyDj05/zmnrOYZJ58yCOECGNJF3KxJ9R9McetSr2G7X7WLLvcZKxR7nJ3F3jPA9Dx1oppuLn/AFUH70gbpZbZjkN/dIOeP8KKpU+6E5K5f1K3KWUbbbUeVPn/AFee2fT2p8FuF1PUE8yEZUMAIB9f603UjKbG6BvkTDBvliz1P09KghmkfWYX/tCUi4tgcLFjOV+v+zUvm5EONru7LTQsmsWcnmR7Wj2H9wPRh/UU/To5F04KZX3RS4O2MDsP61Tvd+6wm82/IE207cgfeB9frT7KAq+oxBL87Zt3zN6sfb0AompcqCNtVcknibz9Uj86cZTzANo7YP8AWrdmHMdoTNI2Ygh/djnGRWfJbP8A2vInl3f762I/1o5yP/safpsLvYWzPHckh2BzKO7Z/rTmpXTFGziyAJLHp8Z86Xdb3GM+WPTP8xWpeRu0F4PNuOm/CgdjmsWWxb7NqcZgmOJwwDTADliPStKW1WWKUC2AMlueBMO605XUwVnAZCkq6lYv503zweW26MHPBz+oFS3iSi2tZBcTAxyjkIPr/SsxbRc6XILRgRIy584cfOB/I1b1G0Y6dMqxXGUlH3Zx9KWvOOXLyIs28bpd6hEZ5tuQ4+UY6k/1FEsLPqaq1xMBPb7CNo5OD/gKrQwP/bEgC3gEtvk4kHoKW4idLrT3DagMuVOHzj5h/iaIqXNYJ8ujJNPhLWNu0kiuwYgl4F7nP9apTWZFlPGiWm6G43JlWXAPFTWUDrDdJ52oDypyACCP9n19qZN5qXmoIb2Rd8PmLvhB5AHrSjzNNFOykncv3Fr59tchYrQiSISLkk8jBHeqMdsRdafK0NswePyXKsR049fUirFncyyWls0d7E2FMZLQ8fKSvYVmtLdR6ZkXFozW1xj7pHGOnT1FGvK9BL49GXL218mGGVLIMYZccT+vP8xTrezRby/gFjwCJlPndc8n9CKnu3mlt7kKbQ7k8xctjpz61WgvJVu9PnzaMs0XlMRL1IOPX120O7jsCvzNXHzWQ+3sq2ZQXcOMrcY+YD+mP1p9m91LYDzDKnymF96rJggce/TFN1CW7S3SZYbctby9fNxwfx9RToJLgahcwLbRFZVE0eJh9fX3/SlJ6J2CKequZ7Sz+bayytbldvkSbcqwI6ZBx6rV6OZI3ZJG/dyDaxHp61HfRSyzQhrMCKfhnVg2HHGcfiKozzy7G8+3kRkJV+D27100mmrdzConuc7aQvZeJL7T51cWuftC4XIXJ+YfTNdRNdSS+YRGpdlKhpeFJ2fwgdetVY5UTTJLyWVI9yeSZtuSygjbx69vyqDzYLlHis0mnuSWk+XO7qDye3BHbtWFWd3Zs0pR00RasLKZZGlcguCqN5+CFwOy84HXitBbE/a7CPzZyqbmOwBRx9PpVe3nkxDI7JCJ1O6OIb2DDA69ufp1p8tsyXl0xt53MVpgGSYD5iP/ALKmm9xu17NlrTraM2m5gzebOz5eTr0qndpaGK9fEIaW4Ccy+mT61b02ySC1tVFrEu1Gc5lJ6kn1qjFalreyVobT97cl2yd3oKmN+Vu5Ttzmjdx2iW1wpEG1VWPHmcYJA9ar2q2g1C2B+z/u7IN9/vz7+9LqVv8A6DNtitOZABlT2yf6U+K2A1K6Jjs/3cQRcIcjhfb60teTcFbmbFlNo02nputfvs2Cc9CKZYvaG3uJAbX57g9D+P8AWllgzqVqdtptSItjy/Zvam6ZbD+zoci2BaUscRfQelEvhWoRtroNuJ7IXOpEm04VFPy564H9KlSa1SxTH2fC22fu+x9qp3cRFtqLCSBd0qgEQjoGJq7dRbLWdQ8OBEFGYh3wKcviSuJW5b2KNt9jM2l7Tbf8tGGGx6+/tVi4itmayAER3TZyJcZxj3qG2tSL60H+ikJbZ/1Pchvb3qaS3zd6cNlr95if3ZHpTXx7hJLlWgWUMLR3TJwWuCMrL9ajuov3mqfPMDmIcTdORS6fbD7PIRFbZa5J+UsOwqpc25K6qfKtsmSMDLN/eP8AhSjdp6jfLzI0ZoyLJgJp/wDj1x/rc9qghjfz9PYPMMQHoo9G9qfeWarbyp5EB2wgcOw9KoR2ai6tT9kXizzuSb609eQStzMdqUTOFG6NsW8nEseOvHUVdtLFF05G8qDP2XJ+dsfdPvWfdJKJH2vdIFtMncu8ctWlFJINNjH2nGbPPEA/u0a3Qacr1K1tagf2fxbL8752xl/4h61PfwH7PEDIoBuRn9wMdDUEKzsdMzNesC7/AHE2D7wp2oQyJBCf9OH+lryHz2NP3ufQWnKtTId2hup5t8KbN8uCmFY5wPpzj8qtaebiFUP2dpAvH7luQxHLY9BWe13JFpUkk0U7hpAu4JkMBz09cmt62EItftRdFmxzJFwyj+7ipdk9R620LRtYLiPdH85B+eaNtjMf9qiuf1XzbmVVmbyGA3RGLq6dyR65xzRQ1Uew0qfVnTSahD9glImOWtt3yp32iqsepL5+lOq3T5XYSE9CR6+9XII3awiT7VgG224RMdse1UEiLW+lym4ujtnboeo3g+tKy5dWCfv7E+qXB/s6Q/ZrtjHJx8uOxFSpJL/bN+q2c2GjBBZsDovt70ajZ+Zpt0u65I8xTy3+19KSOzjbVZHeKTL2+SS2Oy/4UWXIhRer0GzSTrq9nm1jXdERl5h6N9Kh0yab+zoiEtMiQ5/e+2fWp5ls49TsMrCH2kcyZ/TNRabNZixjwYBulzxGfQD0olayHG9mRTzyb9UAFohG08yE/wAVXYJpWhhJktObcZ4b+79Koz39ns1KYbG+cISsPoxrRF9HFGDmQBLf/nkOwonbmQJS5THS7kFpprCSy/1+M/N/eFaV/NKtnd5azyGBGd396qK6hbfZdNVpGAMx6xf9NFFXtQ1Cz+w3JaaPlwOYv9r6U/d5walyIjt5pDqtodtqQ1qCcORzg+9NvJ5lFiRbRufN6rOB3HvUkMtmdXgCvb7ktgOUxxj6e9F1HayNp6/uDul4AfBOGX3pR5ecJ3UVoLbXMwm1FWsrhQJP4DuH3mpxvcaoQ8V4u62x8ycdPrSWdpCZb944nXdNgkPnkMadNCU1KYq90uy0PQ8dBRC13qE3qtBNNv4G0+2JkkHztyyf7dVLq8s2tdSHnR485cgxd959qv2EMgs7NftEwwz5yP8Ab+tUrkStaX+Lz71x3iB7k0JKz1G3760NC3mtGjhy8J/0cZzHjt9KylksjZ6aN1ruE528Y/iHt61rujLDJmaJtsBGWiHp9KyYrNj/AGUg+yH53Y/uv9sH09qF8L1Erc+xpXzWZtrze9rg7Ry3fdVSD7Gb/TsfZtwt1JxJjjDe9O1OBzp82I7LLS45U+5pqWj/ANtP+6stsNuFBBIIOF/xNH2FqKPK5N2HalDZvp6gLDuMvyYlxj5frWTrCompTrBgFgA21884HP8AOtS5tDJdadC1vbsu5mbDkdx7+xrEeMHUpmMYTfN/AxORnjv71rTT93Uh2s7Ir6zFMNDhjRDMbeZJWijGSV4zn3znj2qn4UsbqTVrqTddPHLL5qggjavORg9u34V1dxNEJ2VYS7SKrCKNeM9wW+lV7l5LWdY5LiQsV3Rw2wBJHdSe5H48VhKnzTujWLtHUtkW+nbbSONAkjbowpyQc9C3biorm5fOpt5dupBRfmmBwCQPX2q2EQ2sLeRHDBwQshywOemfSqdy1oDqoP2UkvGeue9XsnclatWLiTT/AGZfnslxaZzkntWfBczK+lIbm05eToh/ve49q1I5rYWitmEKbQdE/wBn6VnRX1pv0si4QEvJjEZ/vfSpXLyFrm5h2pzSi0QC8hUNPtP7v/ZPtSpcSf2lqI+3R/KEGPK/+tUuo6jbrax5uMYnz/q/9k+1EWoQnUtSAnJxs6J1pNx5EKPNdkMs8n9pKv8AaGNtpniD2al0uWX7Ba5v3OWOMQf7VTSahG2phVeZibTjbH7N70um3v8AoFoSt02XbkJ/tfWqm1ZaBHm5WZVxNILG+Jurps3TLxF/ve9aGoSSJa3Z+2TgjZ1jz3HvVK4vCbK8/wBGveLsn7n+971pX17i0usxXefk6Jz1HvVNr2i0FZ8hVt5ZRqiJ9skIFiD/AKn/AD61JJNINQ05Rdsoy/Bh/wA+lLHdkakuIbw5sh1T/wCvTjef6fp48q65D9E6cH3pRa5m7BPmsiDS5pDbbjdqc3BPMOOwqndTzi21Q/bF/wBcv/LD3PtWnpl8PssZ2XWPN/55/T3qndXzG21PEd2cSr0Tryw9amNrPQp83OixqVxIsU+bqPhFzuhwOo9qq20kzXUQL2r7bIeoI/zmrup3wEFyXS5XKp95Pce9QJeWxv2G4ZNoCcxfSnpybEq/MyGaWT7XMBAp/wBDBykw/veladtNJ9ihH2e45tcfeGPu+tUJDaPdTg+Rk2B6gg96s2Rsjb267oPuMmPMI4BI9aHy3TEr8r0IIrh2XTn+y4xKwy8yj+IU7UZmW3jxCjH7UvCyjPQ+/NQQSWSWNkc22EuMdS3oak1aS1MWB5JIuVxxg55pvl5wd+VaFCSCL7PB5beWwUtvRs7ST1NJcCVfss06rG24bJU6eWcjJHrxmqOou66otrHLHbhUQkhSEm5+59T/AJNWNUuJ3kW1cLaS3EfzeaM+Ww5Xb60NS1GrI0by02+XGkLyyoDzu+Yqcc/T/GisRr6KeGHF5KLpUw5fqwHf27UVnea6j5EddaSv5VqTfnmPGFi+v0rJi3Nplm3n3zBLj+Hj39a27HULf7PaFZTgFlwseOjEe1Zv23GmS7Ibl/LusDH+7itE1yvQPeU0X7y1L2t2oS9blT8z4/i+lVLazUX+5rQcWi5Z5eckCrup3E5trrbakbmVQXkx3qvFM5uL9vPto8OsY2ruOFyPf0ov7uiEr3eoSwhdRjYLbAW9u0mNpY5wfX6ip9NtWjtbNEmVcbm+SEDuap3MxNzqn+nt8sO3Cw4xwKtWMhMdl/pVw2YxyB7fWnK+iJjblbuVJ1kOl3ebiYl7jIKrjtn1rUvFkCXRE0wPkMAcdOPrXPYLaM37++Ja4/8AZK1b75be9JuLwYiPWiSlzh7vIR+XL/xLEF2/DM3KDn94D6+gqTU0kOmz/wClIzNIMBoh9fSqUM5N/pC/2hIF8snmMnPDe/tUupXR+wKF1EZaXkGL/ZNNc3ODS5FqWFgZtZmO20YJb4+aPnovt9abd2W+600NBbOPMbIRiv8AEPekhlmfWNQ23Vu4VAPmXB6D2p801wdTsEX7I4xkgNz3PqPSpg3zbDnolqQWNiojvJBYsha5J+WbOe/9aS5hdLrUiBfrttyMI/svtUmmy3DWLt9iB3zZyso/uj60y5u51m1TNjPjaq/KxPXA9KUXo9C5J8y1LNkki21kPOvlyGOW7ck+tZEl1ONNm/4mMg3XZHzRAn7mfWt6zvGEdkTb3YBhUnj1BrG/tSI6Zbb/AD1L3PQjJ6AetCa5XoHvc5p3VxKLe8P9oA4j25MPrj2qlDNKbzS0+2QlvL3/ADReu4+ntWhf6nbC3vN0x5KjmPPfFVYLuzOqWOZozss1YZi9mHp70Jrl+YoqXOLqEs/2KECWzJeb+IEdsf1p0M9w2qamwewwoUDBPHb+lF3cWf8AoKFoOZT96P8A2l9qdZyWTz6iwa1JMoHC+hak7cqCCldjHnuG1q1GLIhLfzB85/2vesPTd09zC8yKdzEssZzntx+Vbtw9mupyMHtMrZnrxgD/APXWZprwQajb4YCJSR+7yeST7+4raFunYzlfl17l9rCVTNCzCDy5PMjjhHMi46E/SrMoto7EMhW3cN5sQHMh9vX1qHU5Z4oFuVlFp5LElTy7L9Ow/oah0lDlxbWwUf66O4uTksp9B/8ArrP3pIu0U7vUfHdS3NsjRWypbTDlp+SHB6Ae/X6VFdWxM+pHZZ8qhH7v02+1WprfyJnkcmUSKziQjAjfucf561Ru55RdXoN9Hj7Pu/1XT7vtTi7p2F1T2NOCAi1h+eAf6KBhYhjO36VSgSRU0si6xiR84hGOWFW7SZmtbVjqC824HEXsayoLjNvphbUZG/fkcRY7r70lzcrHpz7mlqQm+wMBdkHzSc+UPQ09I5f7T1D/AEpzuC4AQD+FfequqknTpyLu4OJBjavqSPWnKxbVbkfaL074N3H0T3pNS5EEbXepZaF/7Tt/385zb7TgY7NTNNgI063UzXZ2yHnd9DUDRt/aViQdQbcjDOfr/jUGmwN/Z+DDeErcHO6T2HtTkpWQo8tmLcWYFrfL5l3xcbs7/dvatO+tGktLtRJdZbaeH5HIPpWDeWmItVH2af5ZEIzIO7H29607i2P2W5P2adsw7sGX2B9Kp83OmLTkHJaH7dA+bklrMJzJ7H/CnNbsL3Tj5l3/ABrw3sfb3qhBaA3emt9icboWGRLyMBqmmtis+nOIJxiRgcSepX2pJSUwly8qLWmREWKDzbr5JsHLewqtPZEx6rGZbwHzI2+/6ufb3pmnwMtrcKY7z5bk8F//AK3tRNan7Tqq+RcsCqN8zjtj2pR5rMcuXmRYuIWms5j5tyC0SH72fQ0xVm+2o32iTD2QB3Rg/wCelV0tyNMJEV0pFmG+WT0Ue1NtoZBdWWDqADWm3hsj+KmublBW5ieSANqEWZIiXt2TJgGejU7SokaztT/o/wB9wSYuvzH/ABpjiVb7TiJrwA71OUyOn/16i0eSX+zIAbuUFZcfND04B9aUuayBWs9SNbby9NVc26+Vc5O2H/Z9x7VPqqAMAWjI+0KciIZGAeRVWWSVrLUkN5Kdk4OFhx3I9aTVZ5FIf7RI+4rhdmCSVIHOfU1U+ZSEknHciiiTU7hWldZoo5C6pjDA/wB6otSiV7kStIsslm6ssr9CCenvg1ShvLi41CaG2ZYr6PO6YHKSJ0wPfH59PpaU2kuyTyWSCVCoaU8KfU+vOKhOS9B8sSG+0ttTnZrby4ZAx3yTDiQew9v60Vb0q4lvbQ3TuiYYxBnPLAdMcdKKnnl0QOKvudDpSTiwhV7nBilKkImOuCR+tRtah3kg825YS3vQtgcE5/mKisblzNdIb93AuQ22JP4TyDnis+eSGzWO7mjmkMFw/mmeTbjPf6da0XMosHy85uXn2XzLYO0A8y43fPJ6HHr71Fa6hYRpdnz4VP2liQkeff0rHaA6haG4WW3iijIkifIzgkdM/hV600uzS+uN0qNviDuBOMBjjtn3qW7xQRSuyS41a2+06kiyyOTFkbYzyMCrlhqUZhs8C4bEQHA7gH3qB7Cz/tO2wqjEP7wibtg+9LpmnD7BbMHlyXOD5ue/P605W0dxr4WrFD+0P+JXGEt75sXHPy9PkrWvL4i2uybe8GQBwvqazp7DFjfoHuQq3HykPnnJH8q0NQt2FjdbZLoE7O/+0KbUfabivaGxUt79Ptulgi5XEC4LKP7r+9Pv9RtfsduGuMHzRwYye2KdbxMuq2Y+0T/LaLwTn+Fvf3ovllaGzUXXWbvHnuKSs57jk/dWg63uLSTU9TIkhbhc7o8e3ce1OYWr63Z4+y58kNwwB6NUVtBI19qJZrd8uAN0YH8R9qV7aT+24G8myIFsOmQejUU73eoVGrrQXTLa3OmxBIkIMnVX68AetNns0MmpsI5UyyDKN/tGo9Ls1OmW+bJOZD92b3+tV7izCJqbCylX94n3ZAc/OfaiPNZ6hLl50bdrAVitgJbv5bZf4vasiKKUafp6/apx+/JO4Z/iFXbeHbDDj7amLUEbR/s1jp8tppn+mXqEzP8Aez/fX3prm5WCUefc3NRD/Ybo/ayPnX/lmD/FVaCOU6tG32iMgWQHMX0/xpmpyMmm3X/ExdcyKMlCe/1qGCeVtWwNSVsWWcGH/d9qXvciCPLzPUsXVqxu9OBFo3zsTuj/ANoe1FjbOIr0hbHJuDn937k+lJcTTG+00C7hPzN1j/2h/s0yylnEV4DcW5P2gg5BH/stEnLlWgRW+pFd2zm+1Bvs9gSLcqCAM8haq6Wm7UI1JWIlByvQHA6VZuri5FzqnzWBKqgHPPIX6VBYCaWSSSMxpKkAbIIKg7QOM/StU2ru3Qhq8d+ptw+Utorz4ZlBSSWfDE/hWUL543eCyheee1JZZZMqhU9fw5B5PepoiZriGcxvdtOm15HG2NW9cd+uee1Lf6ezNDcXMzyNA+0wxcLtPb37/nWTVpc0mVFr4Sw90kkIM9wH3R7wkYyi/Nz04NV729s/t16PtC8WvTyv932q5IIoIDZQvHGDtMajDcHnn2+vpVW7il/tG+P2sYNof+WQ9FoSWtn0BN6XRasL63NtaYuBgx9o8etZUepxCytdkspxc4+VfofWtbTllFvZ5vCflI+WPHrWYYpDp6Fbub5brjj/AGR70klyvUq659i/qF6rWV1hLpiGQ8D/AGvrUEN6W1SM/Z70l7IH7vqB/hV2+ti1vdjzrk52ng9eQaqW9qTf2DF7o/6Gq8n2akkuTcUX7z0FmupPtWnFbG5PzMMnIxyPb3qCxnuTb3Q+wOCly3WT8PT2q1d2sZFiTHIxWbj5sdx/hUUFjAr6gv2cjMoY5kPdmoaXKhxe+hUvGuPO1VTYHnym/wBYOxGf51dE0z2DOLRQGtM/NKP7v1qC6tbb7ZegxKC9qznMp7Bff2pRaw3OiJbwzQQtLC0IkZtwUcg8Zpy5boFfk2MhfEltGbCSOGO5kQSIYreTzHLc4AAyc1ppe3FzDpsw010Ekmdskm1l+YcEGvL/AArc2uleJYxfTgQR78YJ2sR0PH0NeoyyWF3b2E1uYJo2uBtZJcjqPetHBKZkpuUR9rLceXfD7CeJ+MSD1NEzXIuNTzY4H2ckbpR2C0tlZQeZqH7rGZs8Sn1anXttape6huRFL2bfem9l96zjy6mkr3WhHbvOdMUCyzutP+eox0pttLMJ9MP2JtrK6nEoPTPt71PZW9p9ggGyID7Of+WvbB96qQJaCLTXAhGJmUfvvVh70JR5GGvPsWLu4mRrRxZy8Thch/XHtTbG5eOK5Q292vl3J/hz7f0o1KO0EIOIv3c4YES+x96WO3iW8v1jTGWRjtkz1z/jQ1HkTEm7vQjmujjU4zDe9Ub7v+0D/Ws7W7oS6euDOreWrqGGCcIT/StO/iSC5v3ZpgDbh8+Z6bawmk+3eXAJZ1iVdm7PQ7e305/Oqkot7iT921jOVY5reL7PvFvbp5sat8vQ8lvU1JfxSahH5KuGjjZZ2/uoM5wPU4PSnwIJro3dwkkiEuhdjhdoJXIFZl5c3Pnx6NaTRb1k2yGJhwp6DPbr9ahN6Lceiudbot3Yw3MuxokimQSbXG5gf6daKpqkdrezybYEjz5cYHHCgA8nryKKlzs7XL5Ys0YLkWZQSrcrkGMMyYxwGUHnjrisa7hk1jViAI1gAInRySGJBx+tP12aTMi2yC43EFonf7pHGQelWNIhmttKijSW3dmLYdweSVJUH88fhW1m3daozVrdmbM9l/xJSiR2oxDFxk9ttPS3Laje/urcq0aMMMfQf40xbqaTSmKtZc22Ryeo/wD1U60muDdOc2h3WqNw3sPek78mwfaeoyezH9oTMLZGP2M8iXHb61Pp9j/oVmv2I53OcCbP8ZqG4nuBd3WIIXxZEjEgHYe9XLCWYW9nixz8mTiQdeaJvbQcb8r1MVrMfZJv9GuE8284KMD2z6e9aGow7LC5Ia/UeYo+X/eqtBJL9jsGaxmUvcAkKScdB6Vc1S88vS5Sbe75lHRfxob9/YPe5NyCLKa2oN1dJttBjeCccD396W8nlDaeE1Ij990aLOfmWrMeoQ/21c/NcLstyPmXpwvvRc6jA17p8ZnIJYnBjz/EP8KUGubYdRSsiGxnuGn1Em6iY+bj5kx/E3tTzcXK6yAXsSBbf3jnofpS2d3aPHeHzIsmc/ejxnkn0one1bVJ2U2YZbVhngdh/jShy3Y583MGlz3H9nW3+jRP+8YZSUdmx61Vnnn+z6kzWDLiZANsmf4z7Vd0y0g/s+1HlxtmVz8r/wC39aqSadF9n1LbE6gzqSVf/poaIqNmNt86NGK6xFGDa3aj7MPurntWSt9H9k00styn75vvL/tj3rYhtB5aDfdD/RgMBv8AZ+lZKwutlpuy5uFxK3XnP7xfeklHleok/f2LupajANPud1w6fOvVf9qo7bUbZ9VUfaQxay4/dH/Z9qsaik32O6xeOuHU/wCrB/iqCCN21a1f7Up3WYHMI9P/AK1O3uLUItcz0H3F7aLd6e7ypwxHMZz94e1RW9zZlbxFeH/XnOUx6+1SX0JKWLmWH5ZTnMPXke1VUidbrUB/orZlGMxY6lvaiXwrUUWrvQbO9q1zqg3WfPl5ww64WnaHDFJPcPsRgirgA/LgioprSTztWIhsyNsZ4yOgWq+losSyM6NKp8tGhiJ6FEOc+lbWeqv0IfLyr1NS5uoY7uSwhjMrSL5kMUQwob6/n09qY9w91bKl5MsQb91Jb243Pn3PTPQ9fwp+oWcxh/1q2/kNuVIPvFfc/kafALWxnQjZbx3S7l3fM5bPI9eufzrKy2Zd3ZOJAgkjTyvLW1W3lVBI3zGRdp7f560y8uH+232dU4Fswx5PstXLm4T7TBcFSilmRnbksQOMD05/Sq1zqcBn1U/aGO1Av+r9QB/SlGS10C0uZEmnyyeVaA6jIwKkjbFj196yX3HSh/pV7/x9dFU/3frW9Y6lCIbQec5/dZ4XHXNZR1KF9OgybhvMuR0Uf3R70JrlehXvc5fvYt0N4C1+flA4/CqNrbh77TQVvSv2VSckej+1aN/ej7PdkQ3R5UcAf3gPWqdrdMNRskFpdn/QkJO32b2ov7mwRUuZ6iXNlGfsQ+yzNmfu2PT2plvZIJ9Qb7A3MgH+u9GarFxPKZLHFjIwMvdiO49qjtZrgvf/AOg7R53Uyj1alJ+4tAipa6kV5ahb68YWS8WbjLT+y+9EkN1B4fV7Gyt3uREzIjvnJJPqakvJLgXt8DbxKBbN96Uei+9WbKWc2dt/x6AmI8Fsjv71Um7rQlL3XdnklzoU82pw29uqmRmSNWwceYxBKk4wDznHYV6XJpq21jp0Ito28mZEOyUjOABnr7U23nuAmnZ+xMDOejYzyvvVu+a4+zxN5ML4ul6OBjg+9W5yc7NGagoxumR2dinmaiTYkfvuD5/u3vT7qzQahfH7KoL2Lfemz2HvUtpJcG61JfsQADqc+aPU+9Nuprn+0JgLaFd1kfvSj0Pv7VnB6vQ0mndajLK0X7FEPIh4gbH70+/vVa3swYdOBgt8CZicyE/xL71c02W4e2h+W2G5GGS/u3vVGC4m8jTfmss+ec/Mf7y1Sb5HoH29yxqtsHt2Uww4acAgORxg+9Mhtl+3amTaKQdmCJj6n39qhvb6aSS2TfZndcbzlj0Uc1Vs9RuJEmuGFvsmlLcOR8oz6/j+VS5PlSsKPXUqeISq6pJGunmQGNUYGbAx1/wploXtLcym4EwUBYiRhVPGExjoeR+NYOo6pL/bCySNDEJB5m77wGTwM59MVd8+HULdorcM52lgxYDL+oH+RnGKltN6gm0LPql1pugWpt7dWubjMaqzZOWY847DrTNJ082C2p2wRyT3O+SRzvYnjoAf51UsrWK719A+2K3soXCoz4BbJz79/wBK6LaXuLJIYQsJD7ZCdqhjxyTz6UQtzWHJC2Ue+yRhD5shZizzd+fTt1oqay3yWEYZiSjMoEQ2Lj6nk85FFZNamnzIdKVZ3nEihhAw8vjp/j+NdEmC6/KnEyH7o9aKK6UzCe5Y02KNrCJWjQgxyDG0e9SW1vD5kH7pObUg8e5oooTfKNpczC5srd7qUtEMmyYH8qmsrG2ENsBEB+7buf8AaoorV7Ij7PzMRIkjtdMC7hiZv4j/AHhTNYuJ1011WZwPO7MfQ0UVa/iC+wixHd3A1rUB5z4EXAJz/ClNu724/tXSxvyCD1UGiipSXMOb2H6PiazvDJHGSbk8+Wv+FaE9nbnULv8Acr/x6t04/hWiisV19DWbfMgs9OtVsrTEX8Tn7x/vfWuevUWG21Lyxt/0gdD/ANNKKKhbM1j8Zbs7ifZAPOkwYB/EfSsuC7uf7N03/SJf9ef4z/eFFFKPwMr7Zs6jfXSWl1tmbt/6FWda6tfDU9NAn/5dUH3F/uv7UUVT+AiPxstarqF0tnBiQcTf3B/dPtUthNJNf6h5hB/er/CPeiilJe4ierNO6jQXOpYUf6nP6LWdYkxafMEO0NErHHcgDFFFXP4kZx2ZoXcrw29uY22mWPDnuRg1iaNGknhj7bIN9wk/yyP8xHGe9FFKHxmn/LpmlPNJ9qt5C2WbOSefSqFze3AXVyJMHfH/AAj+9RRW1laRzQb5kaFrdzmGyPmnm1Qn67axhczmx0/98/8Ax89m/wB2iihJcjKbftC9qlzOLK8ImkzuT+I/36q2ssrarZZlc/6An8R9GooppfuxL42W50D3Gnbsn976n+8tT2llbkX+Y/8Al4P8R9WooqZ/Ahw3ZNd6fa/a70+UMm0fuf7q1asbWAQWo8pcCM/1oopT3QR+FmZHaW/l2P7peLnj8xU+pWdubQZjHFyD1PoaKKa/ijl8CJUsrcX2pkRjnYeppWsrc6rATEM/ZB3Po1FFC3YnuiHSbeFbGzxGvSTt/tNWVBDFssP3a8NIenfiiisU3yM1svaFWfH2hvkTi1Yj5BwScGnuFGluAkeBAoHyDoSM/wAzRRUXd0JJWPPvFKq+u2IZRjOMAY6VtaDEiaFdXYX/AEjzD+8JyflUkfrRRU9w6IvWFvDbLaXMUSiZ7cbnIznhj3q7bD7bLGLkmUIjsoY8A4HNFFaw2JnujSjka30228rC5L54B7+9FFFQaPc//9k=" alt="Ahmed Gouda" style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid var(--cyan);box-shadow:0 0 30px rgba(6,182,212,0.3);">
+    </div>
+    <div class="hero-eyebrow">
+      <span></span>
+      Clinical Informatics Professional · CPHIMS Certified
+    </div>
+    <h1 class="hero-name">
+      <span class="first">Ahmed </span><span class="last">Gouda</span>
+    </h1>
+    <div class="hero-bridge">
+      <span class="bridge-icon">🩺</span>
+      <div class="bridge-line"></div>
+      <span class="bridge-icon" style="font-size:1.2rem;">⚕️</span>
+      <div class="bridge-line"></div>
+      <span class="bridge-icon">💻</span>
+    </div>
+    <p class="hero-title">Clinical Application Analyst · ICT Department</p>
+    <p class="hero-subtitle">
+      <span class="loc">📍 Al Salamah Hospital, Jeddah, Saudi Arabia</span>
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">📬 Get In Touch</a>
+      <a href="#projects" class="btn-secondary">🏗️ View My Projects</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">13+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Years in Informatics</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Systems Integrated</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">CPHIMS</div>
+        <div class="stat-label">HIMSS Certified</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-eyebrow reveal">Who I Am</p>
+  <h2 class="section-title reveal">Where Clinical Meets Technology</h2>
+  <p class="section-desc reveal">A registered nurse who crossed the bridge into healthcare IT — uniquely positioned to speak both the language of clinicians and the language of systems.</p>
+
+  <div class="about-grid">
+    <div class="about-card wide reveal">
+      <div class="about-card-icon">🌉</div>
+      <h3>The Bridge Story</h3>
+      <p>I joined Al Salamah Hospital as one of the first nursing staff and a Cerner Millennium Superuser, leading the clinical content setup for HIS across medical, nursing, and allied health teams. After successfully delivering that project, I was invited to transition into the ICT Department as a Clinical Application Analyst — becoming the critical bridge between clinical teams and technology vendors. Over the past four years I've grown into a Jira Administrator, integration developer, and clinical informatics specialist, certified as a CPHIMS by HIMSS.</p>
+    </div>
+    <div class="about-card reveal">
+      <div class="about-card-icon">🏥</div>
+      <h3>Clinical Background</h3>
+      <p>BSc Nursing from Cairo University (Tanta Faculty). Hands-on experience across Pediatric ICU, Emergency Department, and clinical education — spanning Egypt, UAE, and Saudi Arabia. Clinical Instructor in Medical-Surgical Nursing and Pharmacology.</p>
+    </div>
+    <div class="about-card reveal">
+      <div class="about-card-icon">🤖</div>
+      <h3>Technology Edge</h3>
+      <p>Builds Node.js integration services, designs Oracle-to-Jira workflows, administers enterprise ITSM platforms, and creates AI-assisted tools using the Anthropic API. Comfortable working across SQL Server, Oracle, REST APIs, and clinical HIS platforms.</p>
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <p class="section-eyebrow reveal">Career Journey</p>
+  <h2 class="section-title reveal">From Bedside to Bytes</h2>
+  <p class="section-desc reveal">Thirteen years of progressive growth — always carrying clinical knowledge forward into every new role.</p>
+
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-dot current">★</div>
+      <div class="tl-card">
+        <div class="tl-period">JAN 2023 – PRESENT</div>
+        <h3>Clinical Application Analyst</h3>
+        <div class="org">ICT Department · Al Salamah Hospital (formerly Mediclinic Al Murjan) · Jeddah, KSA</div>
+        <ul>
+          <li>Jira Service Management Administrator for hospital-wide ITSM</li>
+          <li>Built Node.js integration services (Oracle → Jira, live dashboards)</li>
+          <li>Led NANDA-compliant Nursing Care Plan module redesign</li>
+          <li>Integrated Medispan with CPOE in OASIS+ HIS</li>
+          <li>Integrated Elsevier Orderset Platform with HIS Orderset Module</li>
+          <li>Project Admin for CADI SmartSense Infant Protection System</li>
+          <li>Managed MOODLE LMS and Gaumard simulation platforms</li>
+          <li>Built SmartSense live reporting dashboard (Node.js)</li>
+          <li>Created OCC Management Reports dashboard and Finance PDF generator</li>
+        </ul>
+        <span class="tl-badge badge-amber">CPHIMS 2025</span>
+        <span class="tl-badge badge-cyan">Jira Admin</span>
+        <span class="tl-badge badge-indigo">Node.js Dev</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-dot analyst">◈</div>
+      <div class="tl-card">
+        <div class="tl-period">2021 – JAN 2023</div>
+        <h3>HIS Superuser & Clinical Content Lead</h3>
+        <div class="org">Al Salamah Hospital · Jeddah, KSA</div>
+        <ul>
+          <li>First nursing staff member and Cerner Millennium Superuser at hospital opening</li>
+          <li>Led clinical dataset setup across medical, nursing, and allied health teams</li>
+          <li>Facilitated vendor-ICT-clinical tripartite meetings for HIS configuration</li>
+          <li>Proposed and voluntarily led HIS content validation project</li>
+          <li>Promoted to Clinical Application Analyst following project success</li>
+        </ul>
+        <span class="tl-badge badge-cyan">Cerner Millennium</span>
+        <span class="tl-badge badge-green">Clinical Content</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-dot nurse">+</div>
+      <div class="tl-card">
+        <div class="tl-period">SEP 2021 – MAR 2022</div>
+        <h3>Registered Nurse — Pediatric ICU (Locum)</h3>
+        <div class="org">Sheikh Khalifa Medical City (SKMC) · Abu Dhabi, UAE</div>
+        <ul>
+          <li>Intensive care for critically ill pediatric patients</li>
+        </ul>
+        <span class="tl-badge badge-green">Pediatric ICU</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-dot nurse">+</div>
+      <div class="tl-card">
+        <div class="tl-period">FEB 2020 – JAN 2023</div>
+        <h3>Registered Nurse — Emergency Department</h3>
+        <div class="org">Al Bishry Medical Complex · KSA</div>
+        <ul>
+          <li>ED nursing care across triage, resuscitation, and acute assessment</li>
+        </ul>
+        <span class="tl-badge badge-green">Emergency Dept</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-dot nurse">✎</div>
+      <div class="tl-card">
+        <div class="tl-period">JAN 2017 – SEP 2018</div>
+        <h3>Clinical Instructor — Medical-Surgical Nursing</h3>
+        <div class="org">Gouna Technical Nursing Institute · Egypt</div>
+        <ul>
+          <li>Facilitated medical-surgical nursing practicals and pharmacology (drug dosage calculations)</li>
+          <li>Designed curriculum-aligned learning scenarios for student nurses</li>
+        </ul>
+        <span class="tl-badge badge-indigo">Education</span>
+        <span class="tl-badge badge-green">Pharmacology</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-dot nurse">+</div>
+      <div class="tl-card">
+        <div class="tl-period">AUG 2017 – FEB 2020</div>
+        <h3>Nurse Supervisor</h3>
+        <div class="org">Hurghada Fever's Hospital · Ministry of Health, Egypt</div>
+        <ul>
+          <li>Supervised nursing operations in an MOH facility</li>
+        </ul>
+        <span class="tl-badge badge-green">Nursing Supervision</span>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-dot nurse">+</div>
+      <div class="tl-card">
+        <div class="tl-period">APR 2012 – JAN 2016</div>
+        <h3>Registered Nurse — Pediatric ICU</h3>
+        <div class="org">Abu El Reesh Japanese Children's University Hospital & Kids Specialized Hospital · Cairo, Egypt</div>
+        <ul>
+          <li>Over 3 years of pediatric intensive care nursing experience</li>
+        </ul>
+        <span class="tl-badge badge-green">Pediatric ICU</span>
+        <span class="tl-badge badge-green">University Hospital</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SYSTEMS -->
+<section id="systems">
+  <p class="section-eyebrow reveal">Technical Toolkit</p>
+  <h2 class="section-title reveal">Systems & Technologies</h2>
+  <p class="section-desc reveal">Platforms, systems, and tools I configure, integrate, administer, and build on — across the full clinical informatics stack.</p>
+
+  <div class="systems-tabs reveal">
+    <button class="tab-btn active" onclick="showTab('his', this)">🏥 HIS Platforms</button>
+    <button class="tab-btn" onclick="showTab('clinical', this)">📚 Clinical Content</button>
+    <button class="tab-btn" onclick="showTab('itsm', this)">🎫 ITSM & Dev</button>
+    <button class="tab-btn" onclick="showTab('data', this)">🗄️ Data & DB</button>
+    <button class="tab-btn" onclick="showTab('education', this)">🎓 Education</button>
+  </div>
+
+  <div id="tab-his" class="tab-content active">
+    <div class="sys-card">
+      <div class="sys-icon">🏥</div>
+      <div class="sys-name">Cerner Millennium</div>
+      <div class="sys-desc">Superuser & clinical content configuration — the HIS I started with at hospital launch</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">⚡</div>
+      <div class="sys-name">InterSystems TrakCare</div>
+      <div class="sys-desc">Clinical application analysis and configuration on the TrakCare platform</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🔵</div>
+      <div class="sys-name">OASIS+</div>
+      <div class="sys-desc">Primary HIS at Al Salamah Hospital — CPOE integration, module configuration, performance management</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">💊</div>
+      <div class="sys-name">Medispan</div>
+      <div class="sys-desc">Drug database integrated with medication ordering in the CPOE module of OASIS+</div>
+    </div>
+  </div>
+
+  <div id="tab-clinical" class="tab-content">
+    <div class="sys-card">
+      <div class="sys-icon">📋</div>
+      <div class="sys-name">Elsevier Orderset Platform</div>
+      <div class="sys-desc">Integration with HIS Orderset module — evidence-based clinical decision support</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🔑</div>
+      <div class="sys-name">Elsevier Clinical Key</div>
+      <div class="sys-desc">Clinical reference platform for physicians and nursing staff</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🏥</div>
+      <div class="sys-name">Elsevier Clinical Skills</div>
+      <div class="sys-desc">Procedure-based clinical competency and skills platform</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🍼</div>
+      <div class="sys-name">CADI SmartSense</div>
+      <div class="sys-desc">Infant protection system — Project Admin, live dashboard, monthly reporting</div>
+    </div>
+  </div>
+
+  <div id="tab-itsm" class="tab-content">
+    <div class="sys-card">
+      <div class="sys-icon">🎫</div>
+      <div class="sys-name">Jira Service Management</div>
+      <div class="sys-desc">Hospital-wide ITSM administrator — custom fields, automations, integrations, customer portals</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🔄</div>
+      <div class="sys-name">Power Automate</div>
+      <div class="sys-desc">Microsoft Power Platform workflow automation expert across hospital processes</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🟢</div>
+      <div class="sys-name">Node.js</div>
+      <div class="sys-desc">Backend integration services — Oracle sync, live dashboards, REST APIs, JSM proxy portals</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🖥️</div>
+      <div class="sys-name">VS Code</div>
+      <div class="sys-desc">Primary development environment for all backend and scripting work</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">📊</div>
+      <div class="sys-name">Microsoft Power BI</div>
+      <div class="sys-desc">Clinical and operational reporting dashboards</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🤖</div>
+      <div class="sys-name">AI Development</div>
+      <div class="sys-desc">ARIA personal AI agent — Anthropic API, MCP server integration, Gmail, Calendar, Drive</div>
+    </div>
+  </div>
+
+  <div id="tab-data" class="tab-content">
+    <div class="sys-card">
+      <div class="sys-icon">🗄️</div>
+      <div class="sys-name">SQL Server (SSMS)</div>
+      <div class="sys-desc">SmartSense database access, custom queries, reporting for Quality team</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🐸</div>
+      <div class="sys-name">Toad for Oracle</div>
+      <div class="sys-desc">Oracle database querying — HIS data extraction, lock contention analysis, DBMS_SCHEDULER</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">📈</div>
+      <div class="sys-name">Microsoft Excel</div>
+      <div class="sys-desc">Advanced analytics, custom field exports, dataset management</div>
+    </div>
+  </div>
+
+  <div id="tab-education" class="tab-content">
+    <div class="sys-card">
+      <div class="sys-icon">🎓</div>
+      <div class="sys-name">MOODLE LMS</div>
+      <div class="sys-desc">Learning management system administration for hospital clinical education</div>
+    </div>
+    <div class="sys-card">
+      <div class="sys-icon">🤱</div>
+      <div class="sys-name">Gaumard Simulators</div>
+      <div class="sys-desc">Life support simulation platform for healthcare education and clinical skills training</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-eyebrow reveal">What I've Built</p>
+  <h2 class="section-title reveal">Key Projects</h2>
+  <p class="section-desc reveal">From clinical module redesigns to backend integration services — real systems running in a live hospital environment.</p>
+
+  <div class="projects-grid">
+    <div class="proj-card reveal">
+      <div class="proj-role">Clinical Integration · CPOE</div>
+      <h3>Medispan CPOE Integration</h3>
+      <p>Integrated the Medispan drug database with medication ordering in the CPOE module of OASIS+ HIS. Served as Clinical Analyst — translating clinical medication safety requirements into technical integration specifications for the project team.</p>
+      <div class="proj-tags"><span class="proj-tag">OASIS+</span><span class="proj-tag">Medispan</span><span class="proj-tag">CPOE</span><span class="proj-tag">Clinical Analysis</span></div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-role">Clinical Decision Support</div>
+      <h3>Elsevier Orderset Integration</h3>
+      <p>Coordinated the integration of the Elsevier Orderset Platform with the HIS Orderset Module, enabling evidence-based clinical order sets at the point of care. Bridged clinical content knowledge with technical implementation.</p>
+      <div class="proj-tags"><span class="proj-tag">Elsevier</span><span class="proj-tag">HIS</span><span class="proj-tag">Ordersets</span><span class="proj-tag">CDS</span></div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-role">Project Administration</div>
+      <h3>Infant Protection System — CADI SmartSense</h3>
+      <p>Project Admin for the CADI SmartSense infant protection system. Built a live Node.js dashboard (port 3005) for the Quality team's monthly infant safety alert reporting, gained SQL Server access, and produced a database reference guide.</p>
+      <div class="proj-tags"><span class="proj-tag">CADI SmartSense</span><span class="proj-tag">Node.js</span><span class="proj-tag">SQL Server</span><span class="proj-tag">Project Admin</span></div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-role">Clinical Module Design & Build</div>
+      <h3>NANDA Nursing Care Plan Module</h3>
+      <p>Led the design change and build of a new Nursing Care Plan module compliant with North American Nursing Diagnoses (NANDA). Redesigned clinical workflows, standardized nursing documentation, and implemented diagnosis-linked care plans.</p>
+      <div class="proj-tags"><span class="proj-tag">NANDA</span><span class="proj-tag">Nursing Informatics</span><span class="proj-tag">HIS</span><span class="proj-tag">Module Design</span></div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-role">Backend Integration Services</div>
+      <h3>Oracle-to-Jira Integration Suite</h3>
+      <p>Built and maintains multiple Node.js microservices syncing Oracle HIS data with Jira Service Management — covering Room Cleaning requests (port 3001), Patient Complaints (port 3002), Refund Requests (port 3003), and OCC Management Reports (port 3004).</p>
+      <div class="proj-tags"><span class="proj-tag">Node.js</span><span class="proj-tag">Oracle</span><span class="proj-tag">Jira REST API</span><span class="proj-tag">Integration</span></div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-role">ITSM & Reporting</div>
+      <h3>Finance PDF Export Generator & OCC Dashboard</h3>
+      <p>Built a PDF export generator for the Finance Department JSM tickets and the OCC Management Reports dashboard — featuring custom layouts, approval sections, automated email notifications with CC rules, and cursor-based Jira API pagination.</p>
+      <div class="proj-tags"><span class="proj-tag">JSM</span><span class="proj-tag">PDF Generation</span><span class="proj-tag">Node.js</span><span class="proj-tag">Email Automation</span></div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-role">AI-Powered Tool</div>
+      <h3>ARIA — Personal AI Agent</h3>
+      <p>Built a personal AI agent called ARIA using the Anthropic API with MCP server integration for Gmail, Google Calendar, and Google Drive. Features Arabic language support and a dark terminal UI for daily productivity in a clinical informatics workflow.</p>
+      <div class="proj-tags"><span class="proj-tag">Anthropic API</span><span class="proj-tag">MCP</span><span class="proj-tag">Node.js</span><span class="proj-tag">Arabic AI</span></div>
+    </div>
+    <div class="proj-card reveal">
+      <div class="proj-role">HIS Configuration</div>
+      <h3>HIS Clinical Content Setup — Hospital Launch</h3>
+      <p>As the first nursing superuser at hospital launch, led the full clinical content setup for Cerner Millennium across medical, nursing, and allied health teams — managing vendor meetings, validating datasets, and delivering a production-ready HIS environment.</p>
+      <div class="proj-tags"><span class="proj-tag">Cerner Millennium</span><span class="proj-tag">HIS Implementation</span><span class="proj-tag">Clinical Content</span><span class="proj-tag">NANDA</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <p class="section-eyebrow reveal">Credentials</p>
+  <h2 class="section-title reveal">Certifications & Education</h2>
+  <p class="section-desc reveal">Validated expertise across health informatics, AI development, digital health, and clinical nursing science.</p>
+
+  <div class="certs-grid">
+    <div class="cert-card reveal">
+      <div class="cert-issuer">
+        <div class="cert-issuer-logo">🏆</div>
+        <div class="cert-issuer-name">HIMSS</div>
+      </div>
+      <h3>Certified Professional in Healthcare Information and Management Systems (CPHIMS)</h3>
+      <div class="cert-validity">Valid May 2025 – May 2028 · #0701058350</div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-issuer">
+        <div class="cert-issuer-logo">🤖</div>
+        <div class="cert-issuer-name">Google for Developers · ITI</div>
+      </div>
+      <h3>Build with AI: Masr Edition</h3>
+      <p style="font-size:0.83rem;color:var(--text-muted);margin-top:0.5rem;">Virtual AI development programme with 5,000+ developers</p>
+      <div class="cert-validity">June 2026</div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-issuer">
+        <div class="cert-issuer-logo">🌐</div>
+        <div class="cert-issuer-name">MENA Telehealth Expo</div>
+      </div>
+      <h3>6th MENA Telehealth & Virtual Care Expo</h3>
+      <p style="font-size:0.83rem;color:var(--text-muted);margin-top:0.5rem;">Riyadh, Saudi Arabia — 3-day conference on telehealth innovation</p>
+      <div class="cert-validity">13–15 May 2025 · Riyadh, KSA</div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-issuer">
+        <div class="cert-issuer-logo">🎓</div>
+        <div class="cert-issuer-name">Cairo University · Tanta Faculty</div>
+      </div>
+      <h3>Bachelor of Science in Nursing</h3>
+      <p style="font-size:0.83rem;color:var(--text-muted);margin-top:0.5rem;">Faculty of Nursing — English Language Programme</p>
+      <div class="cert-validity">2008 – 2015 · Tanta University</div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-issuer">
+        <div class="cert-issuer-logo">🏥</div>
+        <div class="cert-issuer-name">Saudi Council for Health Specialists</div>
+      </div>
+      <h3>Saudi Health Council Registration</h3>
+      <p style="font-size:0.83rem;color:var(--text-muted);margin-top:0.5rem;">Licensed health professional registration for KSA practice</p>
+      <div class="cert-validity expired">Renewal in Progress</div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-issuer">
+        <div class="cert-issuer-logo">❤️</div>
+        <div class="cert-issuer-name">AHA / Clinical</div>
+      </div>
+      <h3>Basic Life Support (BLS) Provider</h3>
+      <div class="cert-validity expired">Sep 2021 · Completed</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DATA FLOW -->
+<div id="dataflow">
+  <div class="dataflow-inner">
+    <p class="section-eyebrow reveal">System Architecture</p>
+    <h2 class="section-title reveal">Data Flow Diagram</h2>
+    <p class="section-desc reveal">Visual overview of the integration architecture I've designed and maintain across hospital systems.</p>
+    <div class="dataflow-img-wrapper reveal" style="cursor:default;min-height:200px;flex-direction:column;gap:1rem;">
+      <span style="font-size:2.5rem;">📊</span>
+      <p style="color:var(--text-muted);font-size:0.9rem;text-align:center;padding:0 2rem;">
+        Data flow diagram available on request.<br>
+        <span style="font-size:0.8rem;color:var(--text-dim);">Contact Ahmed directly to receive the full system architecture diagram.</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-eyebrow reveal">Let's Connect</p>
+  <h2 class="section-title reveal">Get In Touch</h2>
+  <p class="section-desc reveal">Open to opportunities at health IT companies where clinical depth meets technical capability.</p>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <a href="mailto:Ahmed.gouda@alsalamahospital.com" class="contact-item">
+        <div class="contact-item-icon">📧</div>
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value">Ahmed.gouda@alsalamahospital.com</div>
+        </div>
+      </a>
+      <a href="tel:+966563109295" class="contact-item">
+        <div class="contact-item-icon">📱</div>
+        <div>
+          <div class="contact-item-label">Phone / WhatsApp</div>
+          <div class="contact-item-value">+966 563 109 295</div>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/ahmed-gouda-6050511a1" target="_blank" class="contact-item">
+        <div class="contact-item-icon">💼</div>
+        <div>
+          <div class="contact-item-label">LinkedIn</div>
+          <div class="contact-item-value">ahmed-gouda-6050511a1</div>
+        </div>
+      </a>
+      <div class="contact-item">
+        <div class="contact-item-icon">📍</div>
+        <div>
+          <div class="contact-item-label">Location</div>
+          <div class="contact-item-value">Jeddah, Saudi Arabia</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">🏥</div>
+        <div>
+          <div class="contact-item-label">Current Employer</div>
+          <div class="contact-item-value">Al Salamah Hospital</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">🎯</div>
+        <div>
+          <div class="contact-item-label">Open To</div>
+          <div class="contact-item-value">Clinical Informatics · Health IT · Vendor Roles</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.5rem;line-height:1.7;">
+        Whether you're a recruiter, a health IT vendor, or a fellow clinical informaticist — I'd love to connect. Use the form below or reach out directly.
+      </p>
+      <div class="contact-form">
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input type="text" class="form-input" placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="jane@company.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company</label>
+          <input type="text" class="form-input" placeholder="InterSystems / Abbott / Stryker…">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell me about the opportunity…"></textarea>
+        </div>
+        <button class="btn-primary" onclick="sendEmail()" style="width:100%;justify-content:center;">📬 Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal()">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <img class="modal-img" id="modal-img" src="" alt="Full size image">
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>Ahmed Gouda</span> · Clinical Application Analyst · CPHIMS · Al Salamah Hospital, Jeddah</p>
+  <p style="margin-top:0.5rem;color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:0.75rem;">🌐 https://ahmed20891.github.io</p>
+</footer>
+
+<script>
+/* ===== THEME TOGGLE ===== */
+const toggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+toggle.addEventListener('click', () => {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  toggle.textContent = isDark ? '🌙' : '☀️';
+});
+
+/* ===== HAMBURGER ===== */
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+/* ===== TABS ===== */
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ===== MODAL ===== */
+function openModal(imgId) {
+  const src = document.getElementById(imgId + '-thumb').src;
+  document.getElementById('modal-img').src = src;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+/* ===== SCROLL REVEAL ===== */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ===== CONTACT FORM ===== */
+function sendEmail() {
+  const name = document.querySelector('.contact-form .form-input:nth-of-type(1)').value || '';
+  const email = document.querySelector('.contact-form .form-input:nth-of-type(2)').value || '';
+  const company = document.querySelector('.contact-form .form-input:nth-of-type(3)').value || '';
+  const msg = document.querySelector('.form-textarea').value || '';
+  const subject = encodeURIComponent('Opportunity for Ahmed Gouda — ' + company);
+  const body = encodeURIComponent(`From: ${name} (${email}) — ${company}\n\n${msg}`);
+  window.location.href = `mailto:Ahmed.gouda@alsalamahospital.com?subject=${subject}&body=${body}`;
+}
+</script>
+</body>
+</html>
