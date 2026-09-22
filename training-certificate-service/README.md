@@ -108,7 +108,7 @@ assets/cbahi-logo.png     →  prints on the right
 ```
 
 PNG (transparent background preferred), JPG, WEBP, GIF and SVG all work, and any
-height is fine — the JCI seal prints at `CERT_JCI_HEIGHT_MM` (13 mm) and the
+height is fine — the JCI seal prints at `CERT_JCI_HEIGHT_MM` (15 mm) and the
 CBAHI wordmark at `CERT_CBAHI_HEIGHT_MM` (10 mm), which makes the round seal and
 the wide wordmark read as the same size. Alternative locations can be set
 with `CERT_JCI_LOGO_PATH` / `CERT_CBAHI_LOGO_PATH`, and the wording changed with

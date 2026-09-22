@@ -169,7 +169,7 @@ const ACCREDITATION_LABEL = process.env.CERT_ACCREDITATION_LABEL || "Accredited 
 
 // Printed height of each mark in millimetres. A round seal needs a little more
 // height than a wide wordmark to look the same size, hence the two defaults.
-const JCI_HEIGHT_MM   = parseFloat(process.env.CERT_JCI_HEIGHT_MM   || "13");
+const JCI_HEIGHT_MM   = parseFloat(process.env.CERT_JCI_HEIGHT_MM   || "15");
 const CBAHI_HEIGHT_MM = parseFloat(process.env.CERT_CBAHI_HEIGHT_MM || "10");
 
 if (!JCI_DATA_URI && !CBAHI_DATA_URI) {
