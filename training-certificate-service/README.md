@@ -108,7 +108,9 @@ assets/cbahi-logo.png     →  prints on the right
 ```
 
 PNG (transparent background preferred), JPG, WEBP, GIF and SVG all work, and any
-height is fine — each mark is scaled to 11 mm. Alternative locations can be set
+height is fine — the JCI seal prints at `CERT_JCI_HEIGHT_MM` (13 mm) and the
+CBAHI wordmark at `CERT_CBAHI_HEIGHT_MM` (10 mm), which makes the round seal and
+the wide wordmark read as the same size. Alternative locations can be set
 with `CERT_JCI_LOGO_PATH` / `CERT_CBAHI_LOGO_PATH`, and the wording changed with
 `CERT_ACCREDITATION_LABEL` (default "Accredited by").
 
@@ -129,6 +131,14 @@ trademarks and may only be displayed while the accreditation is current.
 
 If no recipient at all can be resolved, nothing is sent, the ticket is **not**
 marked as done, and the error is logged — it retries on the next poll.
+
+## Bilingual field values
+
+Some ASAC select lists carry both scripts in one option, e.g. the Training
+Department value `ICT قسم تقنية المعلومات`. The certificate is English, so the
+Arabic half is dropped and it prints as `ICT` — the substitution is logged each
+time it happens. Values that are Arabic-only are left exactly as they are, and
+setting `CERT_ENGLISH_ONLY_FIELDS=false` turns the behaviour off entirely.
 
 ## Restarts and missed tickets
 

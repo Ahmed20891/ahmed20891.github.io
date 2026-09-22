@@ -167,6 +167,11 @@ const JCI_DATA_URI   = loadOptionalImage("JCI",   process.env.CERT_JCI_LOGO_PATH
 const CBAHI_DATA_URI = loadOptionalImage("CBAHI", process.env.CERT_CBAHI_LOGO_PATH, ["cbahi-logo", "cbahi"]);
 const ACCREDITATION_LABEL = process.env.CERT_ACCREDITATION_LABEL || "Accredited by";
 
+// Printed height of each mark in millimetres. A round seal needs a little more
+// height than a wide wordmark to look the same size, hence the two defaults.
+const JCI_HEIGHT_MM   = parseFloat(process.env.CERT_JCI_HEIGHT_MM   || "13");
+const CBAHI_HEIGHT_MM = parseFloat(process.env.CERT_CBAHI_HEIGHT_MM || "10");
+
 if (!JCI_DATA_URI && !CBAHI_DATA_URI) {
   console.warn("[Accreditation] ⚠️  No JCI/CBAHI artwork in assets/ — the accreditation strip is hidden.");
 }
@@ -358,6 +363,34 @@ function adfToText(adf) {
   return text.trim();
 }
 
+// Several ASAC select lists carry a bilingual label, e.g. the Training
+// Department option "ICT قسم تقنية المعلومات". The certificate is written in
+// English, and mixing scripts inside an English sentence reads badly (and
+// depends on an Arabic font being installed on the print host), so the Arabic
+// half is dropped when a Latin half exists. Arabic-only values are left
+// untouched — nothing is ever blanked out.
+const ARABIC_RANGE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+const ENGLISH_ONLY_FIELDS = (process.env.CERT_ENGLISH_ONLY_FIELDS || "true").toLowerCase() !== "false";
+
+function preferLatinScript(value, fieldLabel) {
+  if (!ENGLISH_ONLY_FIELDS || !value) return value;
+  if (!ARABIC_RANGE.test(value)) return value;
+  if (!/[A-Za-z]/.test(value)) return value;   // Arabic-only — keep as it is
+
+  const cleaned = value
+    .replace(new RegExp(ARABIC_RANGE.source, "g"), "")
+    .replace(/[\u060C\u061B\u061F\u0640]/g, "")   // Arabic comma, semicolon, question mark, tatweel
+    .replace(/[-–—/|،]+\s*$/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+
+  if (!cleaned) return value;
+  if (cleaned !== value) {
+    console.log(`[Cert] 🔤 ${fieldLabel || "field"}: "${value}" → "${cleaned}" (English-only certificate)`);
+  }
+  return cleaned;
+}
+
 function readFieldValue(fields, fieldId) {
   if (!fieldId) return "";
   const raw = fields[fieldId];
@@ -413,11 +446,11 @@ function buildCertificateData(issue) {
   const f = issue.fields;
   return {
     issueKey:    issue.key,
-    traineeName: readFieldValue(f, CF_TRAINEE_NAME),
+    traineeName: preferLatinScript(readFieldValue(f, CF_TRAINEE_NAME), "Trainee Name"),
     traineeId:   readFieldValue(f, CF_TRAINEE_ID),
-    institution: readFieldValue(f, CF_INSTITUTION),
-    program:     readFieldValue(f, CF_PROGRAM),
-    department:  readFieldValue(f, CF_DEPARTMENT),
+    institution: preferLatinScript(readFieldValue(f, CF_INSTITUTION), "Institution"),
+    program:     preferLatinScript(readFieldValue(f, CF_PROGRAM),     "Program"),
+    department:  preferLatinScript(readFieldValue(f, CF_DEPARTMENT),  "Department"),
     startDate:   CF_START_DATE ? formatCertDate(readFieldValue(f, CF_START_DATE)) : "",
     endDate:     CF_END_DATE   ? formatCertDate(readFieldValue(f, CF_END_DATE))   : "",
     certNo:      buildCertificateNumber(issue),
@@ -455,8 +488,8 @@ function buildCertificateHTML(data) {
 
   // Accreditation strip — rendered only for the artwork that is actually present
   const accreditationMarks = [
-    JCI_DATA_URI   ? `<img src="${JCI_DATA_URI}" alt="JCI Accredited"/>`     : "",
-    CBAHI_DATA_URI ? `<img src="${CBAHI_DATA_URI}" alt="CBAHI Accredited"/>` : "",
+    JCI_DATA_URI   ? `<img src="${JCI_DATA_URI}" alt="JCI Accredited" style="height:${JCI_HEIGHT_MM}mm"/>`       : "",
+    CBAHI_DATA_URI ? `<img src="${CBAHI_DATA_URI}" alt="CBAHI Accredited" style="height:${CBAHI_HEIGHT_MM}mm"/>` : "",
   ].filter(Boolean);
 
   const accreditationStrip = accreditationMarks.length
@@ -565,7 +598,7 @@ function buildCertificateHTML(data) {
     font-family: "Segoe UI", Arial, sans-serif; font-size: 7pt; font-weight: 700;
     letter-spacing: 1.4pt; text-transform: uppercase; color: #9aa6b6; white-space: nowrap;
   }
-  .accreditation img { height: 11mm; width: auto; object-fit: contain; }
+  .accreditation img { width: auto; object-fit: contain; }
   .accreditation .divider { width: 0.3mm; height: 7mm; background: #dce4ef; }
 
   .footer {
@@ -1037,5 +1070,6 @@ module.exports = {
   buildCertificateHTML,
   generateCertificatePDF,
   readFieldValue,
+  preferLatinScript,
   buildCertificateNumber,
 };
