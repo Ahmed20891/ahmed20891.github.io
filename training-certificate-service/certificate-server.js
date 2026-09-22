@@ -57,6 +57,16 @@ const CF_DEPARTMENT   = process.env.CF_DEPARTMENT   || "customfield_10074";
 const CF_START_DATE   = process.env.CF_START_DATE   || "";   // optional — leave blank to hide
 const CF_END_DATE     = process.env.CF_END_DATE     || "";   // optional — leave blank to hide
 
+// Optional field holding the trainee's own email address. Needed only when the
+// address is captured in a custom field rather than by the portal itself — with
+// anonymous portal access, Jira's own "Your contact e-mail" box creates the
+// customer and sets them as the reporter, which is already resolved below.
+//   primary → the certificate is addressed to it, reporter/requester drop to CC
+//   add     → it is added alongside the reporter/requester
+const CF_CONTACT_EMAIL     = process.env.CF_CONTACT_EMAIL || "";
+const CONTACT_EMAIL_MODE   = (process.env.CERT_CONTACT_EMAIL_MODE || "primary").toLowerCase();
+const EMAIL_PATTERN        = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 // Fields that must carry a value before a certificate is issued
 const REQUIRED_FIELDS = [
   { id: CF_TRAINEE_NAME, label: "Trainee Name" },
@@ -721,10 +731,32 @@ async function resolveRecipients(issue) {
     || (await fetchUserEmailByAccountId(f.reporter?.accountId, f.reporter?.displayName));
 
   const toSet = new Set();
-  if (jsmRequesterEmail) toSet.add(jsmRequesterEmail.toLowerCase());
-  if (reporterEmail)     toSet.add(reporterEmail.toLowerCase());
-
   const ccSet = new Set(TRAINING_TEAM_CC.map(e => e.toLowerCase()));
+
+  // A contact-email custom field, when one is configured and holds a valid
+  // address, is the trainee's own address and outranks the portal account.
+  const contactEmailRaw = CF_CONTACT_EMAIL ? readFieldValue(f, CF_CONTACT_EMAIL) : "";
+  const contactEmail    = contactEmailRaw && EMAIL_PATTERN.test(contactEmailRaw.trim())
+    ? contactEmailRaw.trim().toLowerCase()
+    : "";
+
+  if (CF_CONTACT_EMAIL && contactEmailRaw && !contactEmail) {
+    console.warn(`[Cert] ⚠️  ${issue.key} — contact email "${contactEmailRaw}" is not a valid address, falling back to the reporter.`);
+  }
+
+  if (contactEmail) {
+    toSet.add(contactEmail);
+    console.log(`[Cert] 📧 ${issue.key} — contact email from ${CF_CONTACT_EMAIL}: ${contactEmail} (${CONTACT_EMAIL_MODE})`);
+  }
+
+  // Without a usable contact email the portal requester and the Jira reporter
+  // are the recipients; with one in "primary" mode they become CC instead.
+  const portalEmails = [jsmRequesterEmail, reporterEmail]
+    .filter(Boolean)
+    .map(e => e.toLowerCase());
+
+  const portalGoesToCc = contactEmail && CONTACT_EMAIL_MODE === "primary";
+  portalEmails.forEach(e => (portalGoesToCc ? ccSet : toSet).add(e));
   participantEmails.forEach(e => ccSet.add(e.toLowerCase()));
 
   const assigneeEmail = f.assignee?.emailAddress

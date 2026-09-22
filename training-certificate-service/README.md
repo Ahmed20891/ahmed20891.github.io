@@ -134,6 +134,20 @@ trademarks and may only be displayed while the accreditation is current.
 * **CC** — `CERT_CC_EMAILS` from `.env`, plus the ticket's request participants
   and the assignee. Anyone already in TO is removed from CC.
 
+### Requests raised through the embedded widget
+
+A widget form with anonymous access ends with Jira's own **"Your contact
+e-mail"** box. That is not a custom field: Jira creates (or matches) a customer
+account from the address and makes them the **reporter**, so the certificate
+already goes there through the normal reporter lookup — nothing to configure.
+
+If the address is instead captured in a custom field of your own, point
+`CF_CONTACT_EMAIL` at it. The value is validated as an address before use, and
+`CERT_CONTACT_EMAIL_MODE` decides what happens to the portal account:
+`primary` (default) addresses the certificate to the contact field and moves the
+reporter to CC, `add` keeps both in TO. An unusable value is logged and the
+reporter is used instead, so a typo never silently loses the certificate.
+
 If no recipient at all can be resolved, nothing is sent, the ticket is **not**
 marked as done, and the error is logged — it retries on the next poll.
 
