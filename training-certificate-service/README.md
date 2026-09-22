@@ -97,6 +97,26 @@ produces the same number.
 The hospital logo is embedded from `assets/alsalama-logo.png`. To add a seal or
 stamp, drop the image in `assets/` and set `CERT_SEAL_PATH=assets/seal.png`.
 
+### Accreditation marks (JCI / CBAHI)
+
+An accreditation strip prints between the signatures and the footer. Drop the
+hospital's approved artwork into `assets/`:
+
+```
+assets/jci-logo.png       →  prints on the left of the strip
+assets/cbahi-logo.png     →  prints on the right
+```
+
+PNG (transparent background preferred), JPG, WEBP, GIF and SVG all work, and any
+height is fine — each mark is scaled to 11 mm. Alternative locations can be set
+with `CERT_JCI_LOGO_PATH` / `CERT_CBAHI_LOGO_PATH`, and the wording changed with
+`CERT_ACCREDITATION_LABEL` (default "Accredited by").
+
+The strip renders only for the files that are actually present: with one mark it
+prints that one, with neither it is hidden entirely and the layout closes up. Use
+the official artwork issued to the hospital by JCI and CBAHI — both marks are
+trademarks and may only be displayed while the accreditation is current.
+
 ---
 
 ## Recipients
@@ -109,6 +129,14 @@ stamp, drop the image in `assets/` and set `CERT_SEAL_PATH=assets/seal.png`.
 
 If no recipient at all can be resolved, nothing is sent, the ticket is **not**
 marked as done, and the error is logged — it retries on the next poll.
+
+## Restarts and missed tickets
+
+Each poll only looks at tickets updated since the previous one, so a service that
+is down during a clearance would otherwise miss it. The first poll after startup
+therefore looks back `CERT_STARTUP_LOOKBACK_HOURS` (default 24) instead, and
+`sent-certificates.json` keeps that from re-sending anything already issued. The
+wider window is used again on the next attempt if that first search fails.
 
 ## Missing fields
 

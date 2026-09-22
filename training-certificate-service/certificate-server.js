@@ -36,6 +36,13 @@ const CERT_BIND     = process.env.CERT_BIND || "127.0.0.1";   // localhost-only 
 const CERT_API_KEY  = process.env.CERT_API_KEY || "";          // optional x-api-key for the routes
 const POLL_INTERVAL = parseInt(process.env.CERT_POLL_INTERVAL_MINUTES || "5") * 60 * 1000;
 
+// Each poll only looks at tickets updated since the previous one. If the service
+// was stopped (restart, patching, server reboot) the tickets that cleared in the
+// meantime would fall outside that window, so the FIRST poll after startup looks
+// back further. The sent-certificates tracker still prevents duplicates.
+const STARTUP_LOOKBACK_HOURS = parseFloat(process.env.CERT_STARTUP_LOOKBACK_HOURS || "24");
+let isFirstPoll = true;
+
 // ─── TRIGGER CONFIG — confirm these three against Jira, they are exact-match ──
 const CERT_PROJECT_KEY  = process.env.CERT_PROJECT_KEY  || "ASAC";
 const CERT_STATUS       = process.env.CERT_STATUS       || "Clearance";        // exact Jira status name
@@ -115,18 +122,54 @@ let LOGO_DATA_URI = null;
   console.warn("[Logo] ⚠️  No logo found — certificate will print without it.");
 })();
 
-// Optional round seal / stamp image, e.g. public/seal.png
-let SEAL_DATA_URI = null;
-(function loadSeal() {
-  const sealPath = process.env.CERT_SEAL_PATH;
-  if (!sealPath) return;
-  const full = path.isAbsolute(sealPath) ? sealPath : path.join(__dirname, sealPath);
-  if (!fs.existsSync(full)) { console.warn(`[Seal] ⚠️  Not found: ${full}`); return; }
-  const ext  = path.extname(full).replace(".", "").toLowerCase();
-  const mime = (ext === "jpg" || ext === "jpeg") ? "image/jpeg" : "image/png";
-  SEAL_DATA_URI = `data:${mime};base64,` + fs.readFileSync(full).toString("base64");
-  console.log(`[Seal] ✅ Loaded from ${sealPath}`);
-})();
+// ─── OPTIONAL IMAGES (seal + accreditation marks) ─────────────────────────────
+const IMAGE_MIME = {
+  png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg",
+  gif: "image/gif", webp: "image/webp", svg: "image/svg+xml",
+};
+
+function fileToDataUri(fullPath) {
+  const ext  = path.extname(fullPath).replace(".", "").toLowerCase();
+  const mime = IMAGE_MIME[ext] || "image/png";
+  return `data:${mime};base64,` + fs.readFileSync(fullPath).toString("base64");
+}
+
+// Looks for an explicit .env path first, then the default asset filenames in
+// any supported extension. Returns null (and logs) when nothing is found.
+function loadOptionalImage(label, envPath, baseNames) {
+  if (envPath) {
+    const full = path.isAbsolute(envPath) ? envPath : path.join(__dirname, envPath);
+    if (fs.existsSync(full)) {
+      console.log(`[${label}] ✅ Loaded from ${envPath}`);
+      return fileToDataUri(full);
+    }
+    console.warn(`[${label}] ⚠️  Not found: ${full}`);
+    return null;
+  }
+  for (const base of baseNames) {
+    for (const ext of Object.keys(IMAGE_MIME)) {
+      const full = path.join(__dirname, "assets", `${base}.${ext}`);
+      if (fs.existsSync(full)) {
+        console.log(`[${label}] ✅ Loaded from assets/${base}.${ext}`);
+        return fileToDataUri(full);
+      }
+    }
+  }
+  return null;
+}
+
+// Round seal / stamp — optional
+const SEAL_DATA_URI = loadOptionalImage("Seal", process.env.CERT_SEAL_PATH, ["seal"]);
+
+// Accreditation marks — drop the approved artwork in assets/ and it appears
+// automatically; nothing breaks if a file is absent.
+const JCI_DATA_URI   = loadOptionalImage("JCI",   process.env.CERT_JCI_LOGO_PATH,   ["jci-logo", "jci"]);
+const CBAHI_DATA_URI = loadOptionalImage("CBAHI", process.env.CERT_CBAHI_LOGO_PATH, ["cbahi-logo", "cbahi"]);
+const ACCREDITATION_LABEL = process.env.CERT_ACCREDITATION_LABEL || "Accredited by";
+
+if (!JCI_DATA_URI && !CBAHI_DATA_URI) {
+  console.warn("[Accreditation] ⚠️  No JCI/CBAHI artwork in assets/ — the accreditation strip is hidden.");
+}
 
 // ─── SENT TRACKER ─────────────────────────────────────────────────────────────
 const sentFilePath = path.join(__dirname, "sent-certificates.json");
@@ -410,6 +453,20 @@ function buildCertificateHTML(data) {
     ? `<div class="period">Training period: ${escapeHtml(data.startDate)} &mdash; ${escapeHtml(data.endDate)}</div>`
     : "";
 
+  // Accreditation strip — rendered only for the artwork that is actually present
+  const accreditationMarks = [
+    JCI_DATA_URI   ? `<img src="${JCI_DATA_URI}" alt="JCI Accredited"/>`     : "",
+    CBAHI_DATA_URI ? `<img src="${CBAHI_DATA_URI}" alt="CBAHI Accredited"/>` : "",
+  ].filter(Boolean);
+
+  const accreditationStrip = accreditationMarks.length
+    ? `<div class="accreditation">
+         <span class="accreditation-label">${escapeHtml(ACCREDITATION_LABEL)}</span>
+         <span class="divider"></span>
+         ${accreditationMarks.join(`<span class="divider"></span>`)}
+       </div>`
+    : "";
+
   return `<!DOCTYPE html>
 <html><head><meta charset="UTF-8"/>
 <style>
@@ -433,7 +490,7 @@ function buildCertificateHTML(data) {
   }
   .frame-inner {
     width: 100%; height: 100%; border: 0.5mm solid ${gold}; border-radius: 1mm;
-    padding: 8mm 14mm 6mm; display: flex; flex-direction: column; align-items: center;
+    padding: 6mm 14mm 5mm; display: flex; flex-direction: column; align-items: center;
     text-align: center;
   }
 
@@ -453,7 +510,7 @@ function buildCertificateHTML(data) {
     text-transform: uppercase; margin-top: 2mm;
   }
 
-  .lead { font-size: 12pt; color: #5a6675; margin-top: 8mm; font-style: italic; }
+  .lead { font-size: 12pt; color: #5a6675; margin-top: 6mm; font-style: italic; }
 
   .name {
     font-size: 30pt; font-weight: 700; color: ${navy}; margin-top: 3mm;
@@ -471,7 +528,7 @@ function buildCertificateHTML(data) {
 
   .details {
     display: flex; justify-content: center; gap: 4mm; flex-wrap: wrap;
-    margin-top: 9mm; width: 100%;
+    margin-top: 6mm; width: 100%;
   }
   .detail {
     min-width: 46mm; max-width: 64mm; padding: 3mm 4mm;
@@ -488,7 +545,7 @@ function buildCertificateHTML(data) {
   }
 
   .signatures {
-    margin-top: auto; padding-top: 8mm; width: 100%;
+    margin-top: auto; padding-top: 4mm; width: 100%;
     display: flex; justify-content: space-around; align-items: flex-end;
   }
   .sign { width: 70mm; }
@@ -500,8 +557,19 @@ function buildCertificateHTML(data) {
   }
   .seal { height: 26mm; opacity: .92; }
 
+  .accreditation {
+    width: 100%; margin-top: 3.5mm;
+    display: flex; align-items: center; justify-content: center; gap: 6mm;
+  }
+  .accreditation-label {
+    font-family: "Segoe UI", Arial, sans-serif; font-size: 7pt; font-weight: 700;
+    letter-spacing: 1.4pt; text-transform: uppercase; color: #9aa6b6; white-space: nowrap;
+  }
+  .accreditation img { height: 11mm; width: auto; object-fit: contain; }
+  .accreditation .divider { width: 0.3mm; height: 7mm; background: #dce4ef; }
+
   .footer {
-    width: 100%; margin-top: 5mm; padding-top: 2.5mm; border-top: 0.3mm solid #dce4ef;
+    width: 100%; margin-top: 3mm; padding-top: 2mm; border-top: 0.3mm solid #dce4ef;
     display: flex; justify-content: space-between;
     font-family: "Segoe UI", Arial, sans-serif; font-size: 7.5pt; color: #8b98a8;
     letter-spacing: .3pt;
@@ -544,6 +612,8 @@ function buildCertificateHTML(data) {
       ${SEAL_DATA_URI ? `<img class="seal" src="${SEAL_DATA_URI}" alt="Seal"/>` : `<div style="width:26mm"></div>`}
       ${signature(SIGNATORY_2_NAME, SIGNATORY_2_TITLE)}
     </div>
+
+    ${accreditationStrip}
 
     <div class="footer">
       <span>Certificate No: <strong>${escapeHtml(data.certNo)}</strong></span>
@@ -802,7 +872,15 @@ async function pollClearanceTickets() {
   console.log(`[CertPoll] 🔍 Checking ${CERT_PROJECT_KEY} tickets in "${CERT_STATUS}"... (${new Date().toLocaleTimeString("en-GB")})`);
 
   try {
-    const minutesBack = Math.ceil(POLL_INTERVAL / 60000) + 2;
+    const windowMinutes = Math.ceil(POLL_INTERVAL / 60000) + 2;
+    const minutesBack   = isFirstPoll
+      ? Math.max(windowMinutes, Math.round(STARTUP_LOOKBACK_HOURS * 60))
+      : windowMinutes;
+
+    if (isFirstPoll && minutesBack > windowMinutes) {
+      console.log(`[CertPoll] 🔁 Startup catch-up — looking back ${STARTUP_LOOKBACK_HOURS}h for tickets missed while the service was down.`);
+    }
+
     const jql = `project = "${CERT_PROJECT_KEY}" AND status = "${CERT_STATUS}" ` +
                 `AND updated >= "-${minutesBack}m" ORDER BY updated DESC`;
 
@@ -817,6 +895,10 @@ async function pollClearanceTickets() {
     const url = `${JIRA_BASE_URL}/rest/api/3/search/jql?jql=${encodeURIComponent(jql)}&maxResults=50&fields=${POLL_FIELDS}`;
     const res = await fetch(url, { headers: { Authorization: SYSTEM_AUTH, Accept: "application/json" } });
     if (!res.ok) throw new Error(`Jira search failed: HTTP ${res.status} — ${(await res.text()).slice(0, 200)}`);
+
+    // Only narrow the window once a search has actually succeeded, so a failed
+    // first poll still catches up on the next attempt.
+    isFirstPoll = false;
 
     const wanted = CERT_REQUEST_TYPE.toLowerCase();
     const issues = ((await res.json()).issues || []).filter(issue => {
