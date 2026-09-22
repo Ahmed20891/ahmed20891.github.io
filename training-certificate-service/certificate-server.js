@@ -969,7 +969,11 @@ async function pollClearanceTickets() {
 function requireApiKey(req, res, next) {
   if (!CERT_API_KEY) return next();                      // not configured → open (bound to localhost)
   if (req.get("x-api-key") === CERT_API_KEY) return next();
-  res.status(401).json({ error: "Invalid or missing x-api-key" });
+  // A browser cannot set a header, so ?key= is accepted as well. It ends up in
+  // logs and history, so it is meant for a preview on the server itself, not
+  // for a route that is reachable from the network.
+  if (req.query.key === CERT_API_KEY) return next();
+  res.status(401).json({ error: "Invalid or missing API key (x-api-key header or ?key=)" });
 }
 
 app.get("/health", (req, res) => {

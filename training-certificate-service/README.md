@@ -62,6 +62,10 @@ correctly.
 The service binds to `127.0.0.1` by default. Set `CERT_BIND=0.0.0.0` **only**
 together with `CERT_API_KEY` (sent as the `x-api-key` header).
 
+When `CERT_API_KEY` is set, the key can also be passed as `?key=…` so the
+routes can be opened in a browser on the server itself. A query string lands in
+logs and browser history, so use the header for anything scripted.
+
 | Method | Route | Purpose |
 |---|---|---|
 | `GET` | `/health` | status, config, number of certificates issued |
