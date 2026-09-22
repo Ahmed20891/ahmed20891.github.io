@@ -822,7 +822,7 @@ async function sendCertificateEmail(issue, data, pdfBuffer) {
 
   console.log(`[Cert] ${issue.key} → TO: ${to.join(", ")} | CC: ${cc.join(", ") || "none"}`);
 
-  await createTransporter().sendMail({
+  const info = await createTransporter().sendMail({
     from:    `"${HOSPITAL_NAME} — Training" <${SMTP_FROM}>`,
     replyTo: `"Do Not Reply" <noreply@alsalamahospital.com>`,
     to:      to.join(","),
@@ -833,6 +833,13 @@ async function sendCertificateEmail(issue, data, pdfBuffer) {
   });
 
   console.log(`[Cert] ✅ Certificate emailed for ${issue.key}`);
+  // The relay's own answer — "250 ... queued as ABC123" gives a queue id that
+  // can be searched in the mail server's logs when a message is accepted here
+  // but never arrives in the mailbox.
+  console.log(`[Cert]    message-id : ${info.messageId || "n/a"}`);
+  console.log(`[Cert]    accepted   : ${(info.accepted || []).join(", ") || "none"}`);
+  console.log(`[Cert]    rejected   : ${(info.rejected || []).join(", ") || "none"}`);
+  console.log(`[Cert]    relay said : ${String(info.response || "n/a").trim()}`);
   return { to, cc, filename };
 }
 
@@ -1025,6 +1032,35 @@ app.post("/api/cert/send/:issueKey", requireApiKey, async (req, res) => {
     res.json({ success: true, ...result });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Sends a plain email with no attachment, to separate an SMTP problem from a
+// problem with the certificate itself: if this arrives and the certificate does
+// not, the relay is filtering on size, attachment or content.
+app.post("/api/cert/test-email", requireApiKey, async (req, res) => {
+  const to = req.query.to || NOTIFY_EMAIL;
+  try {
+    const info = await createTransporter().sendMail({
+      from:    `"${HOSPITAL_NAME} — Training" <${SMTP_FROM}>`,
+      to,
+      subject: `Test message from the certificate service (${new Date().toLocaleString("en-GB")})`,
+      text:    `Plain test message, no attachment.\n\nFrom: ${SMTP_FROM}\nRelay: ${SMTP_HOST}:${SMTP_PORT}`,
+    });
+    console.log(`[Cert] ✉️  Test email to ${to} — relay said: ${String(info.response || "").trim()}`);
+    res.json({
+      success:   true,
+      to,
+      from:      SMTP_FROM,
+      relay:     `${SMTP_HOST}:${SMTP_PORT}`,
+      messageId: info.messageId,
+      accepted:  info.accepted,
+      rejected:  info.rejected,
+      response:  info.response,
+    });
+  } catch (err) {
+    console.error(`[Cert] ❌ Test email to ${to} failed: ${err.message}`);
+    res.status(500).json({ success: false, to, error: err.message });
   }
 });
 

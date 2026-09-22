@@ -73,6 +73,7 @@ logs and browser history, so use the header for anything scripted.
 | `GET` | `/api/cert/pdf/:issueKey` | certificate as a PDF download — nothing is sent |
 | `POST` | `/api/cert/send/:issueKey` | issue and email now; add `?force=true` to re-issue |
 | `POST` | `/api/cert/poll-now` | run the poll immediately |
+| `POST` | `/api/cert/test-email?to=…` | send a plain test email (no attachment) and return the relay's reply |
 
 Quickest way to check the layout against a real ticket:
 
@@ -135,6 +136,30 @@ trademarks and may only be displayed while the accreditation is current.
 
 If no recipient at all can be resolved, nothing is sent, the ticket is **not**
 marked as done, and the error is logged — it retries on the next poll.
+
+## When an email does not arrive
+
+`sendMail` only resolves once the relay has accepted the message, so
+`[Cert] ✅ Certificate emailed` means the relay took it — the loss is after
+that. The log prints the relay's own reply next to it:
+
+```
+[Cert]    message-id : <…@alsalamahospital.com>
+[Cert]    accepted   : ahmed.gouda@alsalamahospital.com
+[Cert]    rejected   : none
+[Cert]    relay said : 250 2.0.0 Ok: queued as 4B2C1D3F
+```
+
+That queue id is what the mail server's own logs are searched on. To separate
+SMTP from the certificate itself, send a plain message with no attachment:
+
+```
+POST /api/cert/test-email?to=someone@alsalamahospital.com
+```
+
+If the plain message arrives and the certificate does not, the relay is
+filtering on the attachment, the size or the HTML rather than dropping mail
+from this service.
 
 ## Bilingual field values
 
