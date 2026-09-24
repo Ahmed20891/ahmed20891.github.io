@@ -52,12 +52,12 @@ const POLL_INTERVAL     = parseFloat(env("PAY_POLL_INTERVAL_MINUTES", "2")) * 60
 const CF_TOTAL_COST   = env("PAY_CF_TOTAL_COST",   "customfield_11636");
 const CF_TRAINEE_NAME = env("PAY_CF_TRAINEE_NAME", "customfield_13434");
 const CF_TRAINEE_ID   = env("PAY_CF_TRAINEE_ID",   "customfield_13457");
-const CF_INVOICE_URL  = env("PAY_CF_INVOICE_URL");                        // optional URL field for the link
+const CF_INVOICE_URL  = env("PAY_CF_INVOICE_URL",  "customfield_14189");  // "Payment Link" (URL field); blank = off
 
 // What happens on a failed payment attempt:
-//   transition → move the ticket to "Failed Payment" (as requested)
-//   comment    → only comment; the trainee can retry with the same link
-const ON_FAILED       = env("PAY_ON_FAILED", "transition").toLowerCase();
+//   manual     → internal comment only; staff transition the ticket by hand (default)
+//   transition → move the ticket to "Failed Payment" automatically
+const ON_FAILED       = env("PAY_ON_FAILED", "manual").toLowerCase();
 const PUBLIC_COMMENT  = flag("PAY_PUBLIC_COMMENT", "true");               // link comment visible to the trainee
 
 // Moyasar
@@ -269,7 +269,7 @@ async function ensureInvoice(issue) {
   // failed attempt) — the link is re-posted once so the trainee can retry.
   const open = existing.find(r => r.status === "initiated");
   if (open && open.amount === amount && open.currency === PAY_CURRENCY) {
-    if (open.lastFailedPaymentId && open.repostedFor !== open.lastFailedPaymentId) {
+    if (ON_FAILED === "transition" && open.lastFailedPaymentId && open.repostedFor !== open.lastFailedPaymentId) {
       updateInvoice(open.id, { repostedFor: open.lastFailedPaymentId });
       await comment(key, `Please retry the payment of ${fmt(amount)} using the same secure link:\n${open.url}`,
                     PUBLIC_COMMENT);
@@ -372,9 +372,10 @@ async function applyPayment(payment, source) {
         await comment(key, `Payment attempt failed (${reason}) — Moyasar payment ${payment.id}.`);
         return { ok: true, issueKey: key, status: STATUS_FAILED };
       }
-      await comment(key, `Payment attempt failed (${reason}) — Moyasar payment ${payment.id}. ` +
-                         `The trainee can retry with the same payment link.`);
-      return { ok: true, issueKey: key, note: "failure recorded" };
+      await comment(key, `⚠️ Payment attempt failed (${reason}) — Moyasar payment ${payment.id}. ` +
+                         `Please follow up and transition the request manually. If the trainee retries ` +
+                         `and pays with the same link, it is moved to "${STATUS_PAID}" automatically.`);
+      return { ok: true, issueKey: key, note: "failure recorded — manual handling" };
     }
 
     return { ignored: `payment-status-${payment.status}`, issueKey: key };

@@ -13,15 +13,17 @@ webhook) can be switched off.
    - description = `Alsalama Academy training fee — ASAC-2 — <Trainee Name> (<Trainee ID>)`
    - metadata = `issue_key`, `trainee_name` (`customfield_13434`), `trainee_id` (`customfield_13457`)
    - saves `invoice_id ↔ issue_key ↔ amount` in `payments-db.json`
-   - posts the payment link as a **public comment**, so the trainee gets the JSM email
+   - writes the link to **Payment Link** (`customfield_14189`) and posts it as a **public comment**,
+     so the trainee gets the JSM email
 3. It gets the result in one of two ways (either one is enough):
    - **Webhook** `POST /payments/moyasar/webhook`: checks `secret_token` (timing-safe),
      accepts only `payment_paid` / `payment_failed`, skips duplicate event ids,
      **re-fetches the payment from Moyasar**, and checks amount and currency against the DB.
    - **Polling**: each cycle re-reads every open invoice from Moyasar. This works with
      no public URL. The webhook only makes updates instant.
-4. **paid** → transition to **Paid**. **failed** → transition to **Failed Payment**.
-   Transitions are looked up by target status name (currently ids 5 / 10).
+4. **paid** → transition to **Paid** (looked up by target status name, currently id 5).
+   **failed** → internal comment only; staff transition the ticket manually
+   (`PAY_ON_FAILED=transition` moves it to **Failed Payment** automatically instead).
 
 Safety rules:
 - One invoice per ticket. It is never charged twice.
