@@ -483,7 +483,8 @@ function start() {
     return warn("MOYASAR_SECRET_KEY not set — payments disabled. Set PAY_DRY_RUN=true to test without a key.");
   }
   if (!MOYASAR_WH_SECRET) warn("MOYASAR_WEBHOOK_SECRET not set — webhook off, results arrive by polling only.");
-  log(`✅ ${PAY_DRY_RUN ? "DRY-RUN · " : ""}${TEST_MODE ? "TEST" : "LIVE"} mode · ${PAY_PROJECT_KEY} · ` +
+  const mode = !MOYASAR_SECRET_KEY ? "NO KEY" : TEST_MODE ? "TEST" : "LIVE";
+  log(`✅ ${PAY_DRY_RUN ? "DRY-RUN · " : ""}${mode} mode · ${PAY_PROJECT_KEY} · ` +
       `"${PAY_REQUEST_TYPE}" in "${STATUS_WAITING}" · every ${POLL_INTERVAL / 60000} min`);
   pollPayments();
   setInterval(pollPayments, POLL_INTERVAL);
